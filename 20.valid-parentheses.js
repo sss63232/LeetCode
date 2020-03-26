@@ -17,7 +17,7 @@ var isValid = function (s) {
   const leftBrackets = ['(', '{', '[']
   const rightBrackets = [')', '}', ']']
 
-  const isMatched = (a, b) =>
+  const _isMatched = (a, b) =>
     leftBrackets.indexOf(a) === rightBrackets.indexOf(b)
 
   const foundLeftBrackets = []
@@ -26,7 +26,7 @@ var isValid = function (s) {
     if (leftBrackets.indexOf(char) >= 0) {
       foundLeftBrackets.push(char)
     } else if (rightBrackets.indexOf(char) >= 0) {
-      if (!isMatched(foundLeftBrackets.pop(), char)) {
+      if (!_isMatched(foundLeftBrackets.pop(), char)) {
         return false
       }
     }
