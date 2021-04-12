@@ -47,7 +47,7 @@
  * @param {number[]} prices
  * @return {number}
  */
-var maxProfit = function (prices) {
+let maxProfit = function (prices) {
   let minCost = prices[0]
 
   return prices.reduce(

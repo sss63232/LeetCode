@@ -42,23 +42,20 @@
  * @param {number} target
  * @return {number[]}
  */
-var twoSum = function (numbers, target) {
-  let startPointer = 0
-  let endPointer = numbers.length
-
-  while (startPointer !== endPointer) {
-    const tmpSum = numbers[startPointer] + numbers[endPointer]
-    if (tmpSum === target) {
-      return [startPointer + 1, endPointer + 1]
+const twoSum = function (numbers, target) {
+  let i = 0
+  let j = numbers.length - 1
+  while (i !== j) {
+    const sum = numbers[i] + numbers[j]
+    if (sum === target) {
+      return [i + 1, j + 1]
     }
 
-    if (tmpSum < target) {
-      startPointer++
+    if (sum > target) {
+      j--
     } else {
-      endPointer--
+      i++
     }
   }
-
-  return null
 }
 // @lc code=end
