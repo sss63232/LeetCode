@@ -41,36 +41,22 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-var reverseList = function (head) {
-  /**
-   * iteratively
-   */
-  // if (!head) {
-  //   return null
-  // }
-
-  // let previous = null
-  // let current = head
-  // while (current) {
-  //   const nextIdxNode = current.next
-  //   current.next = previous
-  //   previous = current
-  //   current = nextIdxNode
-  // }
-  // return previous
-
-  /**
-   * recursively
-   */
-
-  const _reverseConsecutiveNodes = (previous, current) => {
-    if (!current) { return previous }
-
-    const nextIdxNode = current.next
-    current.next = previous
-    return _reverseConsecutiveNodes(current, nextIdxNode)
+const reverseList = function (head) {
+  if (!head) {
+    return null
   }
 
-  return _reverseConsecutiveNodes(null, head)
+  let pre = null
+  const queue = [head]
+  while (queue.length) {
+    const cur = queue.shift()
+    if (cur) {
+      queue.push(cur.next)
+      cur.next = pre
+      pre = cur
+    }
+  }
+
+  return pre
 }
 // @lc code=end
