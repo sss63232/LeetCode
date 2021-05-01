@@ -40,15 +40,17 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-var swapPairs = function (head) {
-  if (head !== null && head.next !== null) {
-    const node1 = head
-    const node2 = head.next
-    node1.next = swapPairs(node2.next)
-    node2.next = node1
-    return node2
+const swapPairs = function (head) {
+  if (!head || !head.next) {
+    return head
   }
 
-  return head
+  const swappedOthers = swapPairs(head.next.next)
+
+  const tmp = head.next
+  head.next.next = head
+  head.next = swappedOthers
+
+  return tmp
 }
 // @lc code=end
