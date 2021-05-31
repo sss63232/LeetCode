@@ -57,25 +57,14 @@
  * @return {boolean}
  */
 const isSymmetric = function (root) {
-  if (!root) return true
+  const check = (left, right) => {
+    if (!left && !right) return true
+    if (!!left !== !!right) return false
+    if (left.val !== right.val) return false
 
-  const _reverseTree = node => {
-    if (!node) return null
-
-    const { left, right } = node
-    node.left = _reverseTree(right)
-    node.right = _reverseTree(left)
-    return node
+    return check(left.left, right.right) && check(left.right, right.left)
   }
 
-  const _serializeTree = node => {
-    if (!node) return '#'
-
-    const { left, right, val } = node
-    return `${val}${_serializeTree(left)}${_serializeTree(right)}`
-  }
-
-  const { left, right } = root
-  return _serializeTree(_reverseTree(left)) === _serializeTree(right)
+  return check(root.left, root.right)
 }
 // @lc code=end
