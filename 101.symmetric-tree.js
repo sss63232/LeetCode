@@ -59,31 +59,23 @@
 const isSymmetric = function (root) {
   if (!root) return true
 
-  const valsCollection = []
-  const _collectTo = targetLevel => targetVal => {
-    if (!valsCollection[targetLevel]) {
-      valsCollection[targetLevel] = [targetVal]
-    } else {
-      valsCollection[targetLevel].push(targetVal)
-    }
+  const _reverseTree = node => {
+    if (!node) return null
+
+    const { left, right } = node
+    node.left = _reverseTree(right)
+    node.right = _reverseTree(left)
+    return node
   }
 
-  const queue = [{ node: root, level: 0 }]
-  while (queue.length) {
-    const { node, level } = queue.shift()
-    const collect = _collectTo(level)
+  const _serializeTree = node => {
+    if (!node) return '#'
 
-    if (!node) {
-      collect('#')
-    } else {
-      const { left, right, val } = node
-      collect(val)
-      const nextLevel = level + 1
-      queue.push({ node: left, level: nextLevel }, { node: right, level: nextLevel })
-    }
+    const { left, right, val } = node
+    return `${val}${_serializeTree(left)}${_serializeTree(right)}`
   }
 
-  const _isSymmetricVals = vals => vals.length <= 1 || vals.join('') === vals.reverse().join('')
-  return valsCollection.every(_isSymmetricVals)
+  const { left, right } = root
+  return _serializeTree(_reverseTree(left)) === _serializeTree(right)
 }
 // @lc code=end
