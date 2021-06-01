@@ -61,18 +61,10 @@
 const minDepth = function (root) {
   if (!root) return 0
 
-  let minDepth = 1
-  const queue = [root]
-  while (queue.length) {
-    const curLevelSize = queue.length
-    for (let i = 0; i < curLevelSize; i++) {
-      const { left, right } = queue.shift()
-      if (!left && !right) return minDepth
-      left && queue.push(left)
-      right && queue.push(right)
-    }
+  const { left, right } = root
+  if (!left && !right) return 1
+  if (left && right) return Math.min(minDepth(left), minDepth(right)) + 1
 
-    minDepth++
-  }
+  return minDepth(left || right) + 1
 }
 // @lc code=end

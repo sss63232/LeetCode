@@ -41,16 +41,12 @@
  * @return {ListNode}
  */
 const swapPairs = function (head) {
-  if (!head || !head.next) {
-    return head
-  }
+  if (!head || !head.next) return head
 
-  const swappedOthers = swapPairs(head.next.next)
-
-  const tmp = head.next
-  head.next.next = head
+  const second = head.next
+  const swappedOthers = swapPairs(second.next)
+  second.next = head
   head.next = swappedOthers
-
-  return tmp
+  return second
 }
 // @lc code=end
