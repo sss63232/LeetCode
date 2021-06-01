@@ -55,19 +55,12 @@
  * @return {ListNode}
  */
 const deleteDuplicates = function (head) {
-  const dummyHead = new ListNode(null, head)
+  if (!head || !head.next) return head
 
-  let pre = dummyHead
-  let cur = dummyHead.next
-  while (cur) {
-    if (pre.val === cur.val) {
-      pre.next = cur.next
-    } else {
-      pre = cur
-    }
-    cur = cur.next
-  }
+  const headOfDeduppedOthers = deleteDuplicates(head.next)
+  if (head.val === headOfDeduppedOthers.val) return headOfDeduppedOthers
 
-  return dummyHead.next
+  head.next = headOfDeduppedOthers
+  return head
 }
 // @lc code=end
