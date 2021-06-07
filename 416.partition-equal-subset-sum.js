@@ -50,29 +50,39 @@
  * @return {boolean}
  */
 const canPartition = function (nums) {
-  const sumOfNums = nums.reduce((acc, cur) => acc + cur)
-  if (sumOfNums % 2 !== 0) return false
-  const sumOfSubset = sumOfNums / 2
-
+  const sum = nums.reduce((acc, cur) => acc + cur)
+  if (sum % 2 !== 0) return false
+  const sumOfSubset = sum / 2
   nums.sort((a, b) => b - a)
   if (nums[0] > sumOfSubset) return false
 
+  const pools = new Array(2).fill(0)
   const memo = new Map()
-  const _check = (sum, level) => {
-    if (level === nums.length || sum > sumOfSubset) return false
-    if (sum === sumOfSubset) return true
+  const _check = (numIdx) => {
+    if (numIdx === nums.length) return true
 
-    const key = `${sum}_${level}`
-    if (memo.has(key)) {
-      return memo.get(key)
+    const key = `${numIdx}_${pools.join('_')}`
+    if (memo.has(key)) return memo.get(key)
+
+    const curNum = nums[numIdx]
+    for (let i = 0; i < pools.length; i++) {
+      if (
+        pools[i] === sumOfSubset ||
+        pools[i] + curNum > sumOfSubset
+      ) continue
+
+      pools[i] += curNum
+      if (_check(numIdx + 1)) {
+        memo.set(key, true)
+        return true
+      }
+      pools[i] -= curNum
     }
 
-    const nextLevel = level + 1
-    const result = _check(sum + nums[level], nextLevel) || _check(sum, nextLevel)
-    memo.set(key, result)
-    return result
+    memo.set(key, false)
+    return false
   }
 
-  return _check(0, 0)
+  return _check(0)
 }
 // @lc code=end
