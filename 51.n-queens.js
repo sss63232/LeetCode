@@ -65,6 +65,7 @@ const solveNQueens = function (n) {
       results.push([...prev])
       return
     }
+
     for (let columnIdx = 0; columnIdx < n; columnIdx++) {
       if (
         prev.indexOf(columnIdx) >= 0 ||
@@ -86,9 +87,9 @@ const solveNQueens = function (n) {
 
   _helper(0, [])
 
-  return results.map(result => result.map((colIdx) => {
+  return results.map(result => result.map((queenColIdx) => {
     const curRow = new Array(n).fill('.')
-    curRow[colIdx] = 'Q'
+    curRow[queenColIdx] = 'Q'
     return curRow.join('')
   })
   )
