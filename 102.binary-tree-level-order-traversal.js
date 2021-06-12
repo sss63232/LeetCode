@@ -62,34 +62,23 @@
  * @return {number[][]}
  */
 const levelOrder = function (root) {
-  if (!root) {
-    return []
-  }
-
-  const _toLevel = level => node => ({ ...node, level })
+  if (!root) return []
 
   const result = []
+  const queue = [{ node: root, level: 0 }]
+  while (queue.length) {
+    const cur = queue.shift()
 
-  const queue = [_toLevel(0)(root)]
-  while (queue.length > 0) {
-    const node = queue.shift()
-    if (Object.hasOwnProperty.call(node, 'val')) {
-      const {
-        val,
-        left,
-        right,
-        level
-      } = node
-      if (result[level]) {
-        result[level].push(val)
-      } else {
-        result[level] = [val]
-      }
-
-      const toNextLevel = _toLevel(level + 1)
-      queue.push(toNextLevel(left), toNextLevel(right))
+    if (result[cur.level]) {
+      result[cur.level].push(cur.node.val)
+    } else {
+      result[cur.level] = [cur.node.val]
     }
+
+    cur.node.left && queue.push({ node: cur.node.left, level: cur.level + 1 })
+    cur.node.right && queue.push({ node: cur.node.right, level: cur.level + 1 })
   }
+
   return result
 }
 // @lc code=end
