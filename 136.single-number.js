@@ -47,6 +47,6 @@
  *
  * xor @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#(Bitwise_XOR)
  */
-var singleNumber = function (nums) {
-  return nums.reduce((prev, curr) => prev ^ curr, 0)
+const singleNumber = function (nums) {
+  return nums.reduce((acc, cur) => acc ^ cur)
 }
