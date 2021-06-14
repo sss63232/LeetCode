@@ -65,33 +65,29 @@
  * @return {boolean}
  */
 const canFinish = function (numCourses, prerequisites) {
-  class Course {
-    constructor (inDegree = 0, nextCourses = []) {
-      this.unfinishedPrerequisites = inDegree
-      this.nextLevelCourses = nextCourses
-    }
-  }
+  if (!prerequisites.length) return true
 
-  const allCourses = new Array(numCourses).fill(0).map(() => new Course())
-  prerequisites.forEach(([curCourse, preCourse]) => {
-    allCourses[curCourse].unfinishedPrerequisites++
-    allCourses[preCourse].nextLevelCourses.push(curCourse)
+  const courses = new Array(numCourses)
+    .fill(0)
+    .map(() => ({ inDegree: 0, nextCourses: [] }))
+
+  prerequisites.forEach(([higherCourseIdx, lowerCourseIdx]) => {
+    courses[higherCourseIdx].inDegree++
+    courses[lowerCourseIdx].nextCourses.push(courses[higherCourseIdx])
   })
 
-  let finishedCount = 0
-  const queue = [...allCourses.filter(course => course.unfinishedPrerequisites === 0)]
-  while (queue.length) {
-    const selectedCourse = queue.shift()
-    finishedCount++
-    selectedCourse.nextLevelCourses.forEach(courseIdx => {
-      const course = allCourses[courseIdx]
-      course.unfinishedPrerequisites--
-      if (course.unfinishedPrerequisites === 0) {
-        queue.push(course)
-      }
+  const stack = [...courses.filter(({ inDegree }) => inDegree === 0)]
+
+  while (stack.length) {
+    const cur = stack.pop()
+    numCourses--
+
+    cur.nextCourses.forEach(nextCourse => {
+      nextCourse.inDegree--
+      if (nextCourse.inDegree === 0) stack.push(nextCourse)
     })
   }
 
-  return finishedCount === numCourses
+  return numCourses === 0
 }
 // @lc code=end
