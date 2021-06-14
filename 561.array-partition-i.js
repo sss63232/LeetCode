@@ -42,14 +42,10 @@
  * @param {number[]} nums
  * @return {number}
  */
-var arrayPairSum = function (nums) {
-  return [...nums].sort((a, b) => a - b)
-    .reduce((acc, cur, idx) => {
-      if (idx === 0 || idx % 2 === 0) {
-        acc += cur
-      }
-      return acc
-    },
-    0)
+const arrayPairSum = function (nums) {
+  return [...nums]
+    .sort((a, b) => a - b)
+    .filter((_, idx) => idx % 2 === 0)
+    .reduce((acc, cur) => acc + cur)
 }
 // @lc code=end
