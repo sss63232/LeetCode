@@ -53,25 +53,17 @@
  * @param {number} target
  * @return {number}
  */
-var search = function (nums, target) {
-  const _searchTargetWithinNums = (left, right) => {
-    if (right - left < 0) {
-      return -1
-    }
-    const middleIdx = left + Math.floor((right - left) / 2)
+const search = function (nums, target) {
+  const _searchTargetBetween = (leftIdx, rightIdx) => {
+    if (leftIdx === rightIdx) return nums[leftIdx] === target ? leftIdx : -1
+    // 0, 1, 2, 3, 4
+    const middleIdx = Math.floor((rightIdx - leftIdx) / 2) + leftIdx
     const middleNum = nums[middleIdx]
-
-    if (middleNum === target) {
-      return middleIdx
-    }
-
-    if (target > middleNum) {
-      return _searchTargetWithinNums(middleIdx + 1, right)
-    } else {
-      return _searchTargetWithinNums(left, middleIdx - 1)
-    }
+    if (middleNum === target) return middleIdx
+    if (middleNum > target) return _searchTargetBetween(leftIdx, middleIdx)
+    return _searchTargetBetween(middleIdx + 1, rightIdx)
   }
 
-  return _searchTargetWithinNums(0, nums.length - 1)
+  return _searchTargetBetween(0, nums.length - 1)
 }
 // @lc code=end
