@@ -48,13 +48,16 @@
  * @return {string[][]}
  */
 const groupAnagrams = function (strs) {
-  return Object.values(strs.map(str => str.split('').sort().join('')).reduce((acc, cur, idx) => {
-    if (acc[cur]) {
-      acc[cur].push(strs[idx])
-    } else {
-      acc[cur] = [strs[idx]]
-    }
-    return acc
-  }, {}))
+  return Object.values(
+    strs.map(str => str.split('').sort().join(''))
+      .reduce((acc, cur, idx) => {
+        if (acc[cur]) {
+          acc[cur].push(strs[idx])
+        } else {
+          acc[cur] = [strs[idx]]
+        }
+        return acc
+      }, {})
+  )
 }
 // @lc code=end
