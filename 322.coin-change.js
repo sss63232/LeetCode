@@ -43,38 +43,32 @@
  * @param {number} amount
  * @return {number}
  */
-var coinChange = function (coins, amount) {
-  if (coins.length === 0) return -1
+const coinChange = function (coins, amount) {
   if (amount === 0) return 0
+  if (Math.min(...coins) > amount) return -1
 
-  const fewestNumbersOfCoinsList = [0]
-  for (let coinsAmount = 1; coinsAmount <= amount; coinsAmount++) {
-    const candidates = coins.map(coinValue => {
-      const difference = coinsAmount - coinValue
-      if (difference === 0) {
-        return 1
-      }
+  const dp = new Map()
+  dp.set(0, 0)
+  coins.forEach(coin => dp.set(coin, 1))
 
-      if (difference > 0) {
-        const certainFewestNumber = fewestNumbersOfCoinsList[difference]
-        if (certainFewestNumber < 0) {
-          return null
-        }
+  const _getFewestOf = coinsAmount => {
+    if (coinsAmount < 0) return -1
+    if (dp.has(coinsAmount)) return dp.get(coinsAmount)
 
-        return 1 + certainFewestNumber
-      }
+    const candidates = coins
+      .map(coin => coinsAmount - coin)
+      .map(_getFewestOf)
+      .filter(fewest => fewest >= 0)
 
-      return null
-    })
+    const curFewest = candidates.length
+      ? Math.min(...candidates) + 1
+      : -1
 
-    const validCandidates = candidates.filter(value => value !== null)
-    const fewestNumber =
-      validCandidates.length > 0 ? Math.min(...validCandidates) : -1
-
-    fewestNumbersOfCoinsList[coinsAmount] = fewestNumber
+    dp.set(coinsAmount, curFewest)
+    return curFewest
   }
 
-  return fewestNumbersOfCoinsList[amount]
+  return _getFewestOf(amount)
 }
 
 // @lc code=end

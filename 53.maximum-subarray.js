@@ -41,19 +41,19 @@
   * references:
   * @see [詳細解讀動態規劃的實現, 易理解 - 最大子序和 - 力扣（LeetCode）](https://leetcode-cn.com/problems/maximum-subarray/solution/xiang-xi-jie-du-dong-tai-gui-hua-de-shi-xian-yi-li/)
   */
-var maxSubArray = function (nums) {
-  let sumEndingHere = 0
-
-  return nums.reduce(
-    (acc, cur) => {
-      if (sumEndingHere > 0) {
-        sumEndingHere += cur
-      } else {
-        sumEndingHere = cur
-      }
-      acc = Math.max(acc, sumEndingHere)
-      return acc
-    }, nums[0]
-  )
+const maxSubArray = function (nums) {
+  let maxSumOfEndingOnPre = nums[0]
+  let maxSoFar = nums[0]
+  for (let i = 1; i < nums.length; i++) {
+    const num = nums[i]
+    const maxSumOfEndingOnCur = num + (
+      maxSumOfEndingOnPre > 0
+        ? maxSumOfEndingOnPre
+        : 0
+    )
+    maxSoFar = Math.max(maxSoFar, maxSumOfEndingOnCur)
+    maxSumOfEndingOnPre = maxSumOfEndingOnCur
+  }
+  return maxSoFar
 }
 // @lc code=end
