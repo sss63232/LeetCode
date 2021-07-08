@@ -17,57 +17,60 @@
  * sequence of bits so that it can be stored in a file or memory buffer, or
  * transmitted across a network connection link to be reconstructed later in
  * the same or another computer environment.
- * 
+ *
  * Design an algorithm to serialize and deserialize a binary tree. There is no
  * restriction on how your serialization/deserialization algorithm should work.
  * You just need to ensure that a binary tree can be serialized to a string and
  * this string can be deserialized to the original tree structure.
- * 
+ *
  * Clarification: The input/output format is the same as how LeetCode
  * serializes a binary tree. You do not necessarily need to follow this format,
  * so please be creative and come up with different approaches yourself.
- * 
- * 
+ *
+ *
  * Example 1:
- * 
- * 
+ *
+ *
  * Input: root = [1,2,3,null,null,4,5]
  * Output: [1,2,3,null,null,4,5]
- * 
- * 
+ *
+ *
  * Example 2:
- * 
- * 
+ *
+ *
  * Input: root = []
  * Output: []
- * 
- * 
+ *
+ *
  * Example 3:
- * 
- * 
+ *
+ *
  * Input: root = [1]
  * Output: [1]
- * 
- * 
+ *
+ *
  * Example 4:
- * 
- * 
+ *
+ *
  * Input: root = [1,2]
  * Output: [1,2]
- * 
- * 
- * 
+ *
+ *
+ *
  * Constraints:
- * 
- * 
+ *
+ *
  * The number of nodes in the tree is in the range [0, 10^4].
  * -1000 <= Node.val <= 1000
- * 
- * 
+ *
+ *
  */
 
 // @lc code=start
 /**
+ * tree Serialization
+ *
+ *
  * Definition for a binary tree node.
  * function TreeNode(val) {
  *     this.val = val;
@@ -81,33 +84,13 @@
  * @param {TreeNode} root
  * @return {string}
  */
-var serialize = function (root) {
+const serialize = function (root) {
+  if (!root) return '#'
 
-    if (!root) {
-        return ''
-    }
-
-    const queue = [root]
-    const vals = []
-    while (queue.length > 0) {
-        const node = queue.shift()
-        if (node === null) {
-            vals.push('#')
-        } else {
-            const {
-                val,
-                left,
-                right
-            } = node
-            vals.push(val)
-            queue.push(left, right)
-        }
-    }
-
-    return vals.join(',')
-
-
-};
+  const serializedLeft = serialize(root.left)
+  const serializedRight = serialize(root.right)
+  return `${root.val},${serializedLeft},${serializedRight}`
+}
 
 /**
  * Decodes your encoded data to tree.
@@ -115,39 +98,22 @@ var serialize = function (root) {
  * @param {string} data
  * @return {TreeNode}
  */
-var deserialize = function (data) {
-    if (!data) {
-        return null
-    }
+const deserialize = function (data) {
+  const _buildTree = list => {
+    const rootVal = list.shift()
 
-    const vals = data.split(',')
-    const getNodeFromVals = () => {
-        const val = vals.shift()
-        return val === '#' ? null : new TreeNode(val)
-    }
-
-
-    const root = getNodeFromVals()
-    const queue = [root]
-
-    while (queue.length > 0) {
-        const node = queue.shift()
-        if (node !== null) {
-            const left = getNodeFromVals()
-            const right = getNodeFromVals()
-            node.left = left
-            node.right = right
-            queue.push(left, right)
-        }
-    }
-
+    if (rootVal === '#') return null
+    const root = new TreeNode(rootVal)
+    root.left = _buildTree(list)
+    root.right = _buildTree(list)
     return root
+  }
 
-};
+  return _buildTree(data.split(','))
+}
 
 /**
  * Your functions will be called as such:
  * deserialize(serialize(root));
  */
 // @lc code=end
-
