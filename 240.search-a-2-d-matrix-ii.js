@@ -41,30 +41,20 @@
  *
  */
 /**
+ * 二分法
  * @param {number[][]} matrix
  * @param {number} target
  * @return {boolean}
  */
-var searchMatrix = function (matrix, target) {
-  // to avoid empty matrix
-  const firstRow = matrix[0]
-  if (!firstRow) { return false }
-
-  const xAxisLimit = firstRow.length - 1
-  const yAxisLimit = matrix.length - 1
-
-  let x = 0
-  let y = yAxisLimit
-  while (x <= xAxisLimit && y >= 0) {
-    let pivot = matrix[y][x]
-    if (target === pivot) { return true }
-    if (target > pivot) {
-      x++
-      continue
-    }
-    if (target < pivot) {
-      y--
-    }
+const searchMatrix = function (matrix, target) {
+  let row = matrix.length - 1
+  let column = 0
+  while (row >= 0 && column <= matrix[0].length - 1) {
+    const pivot = matrix[row][column]
+    if (pivot === target) return true
+    pivot > target
+      ? row--
+      : column++
   }
 
   return false

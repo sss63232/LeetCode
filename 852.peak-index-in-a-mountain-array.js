@@ -62,11 +62,23 @@
 
 // @lc code=start
 /**
+ * 二分法
  * @param {number[]} arr
  * @return {number}
  */
 const peakIndexInMountainArray = function (arr) {
-  let a = 8
-  a -= 1
+  let left = 0
+  let right = arr.length - 1
+
+  while (left + 1 < right) {
+    const midIdx = left + Math.floor((right - left) / 2)
+    arr[midIdx + 1] > arr[midIdx]
+      ? left = midIdx + 1
+      : right = midIdx
+  }
+
+  return arr[left] > arr[right]
+    ? left
+    : right
 }
 // @lc code=end

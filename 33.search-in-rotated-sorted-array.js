@@ -53,11 +53,54 @@
 
 // @lc code=start
 /**
+ * 二分法
  * @param {number[]} nums
  * @param {number} target
  * @return {number}
  */
 const search = function (nums, target) {
-  return nums.indexOf(target)
+  const _findMinNumIdx = numbers => {
+    let left = 0
+    let right = nums.length - 1
+    while (left + 1 < right) {
+      const mid = left + Math.floor((right - left) / 2)
+      numbers[mid] > numbers[right]
+        ? left = mid + 1
+        : right = mid
+    }
+
+    return numbers[left] > numbers[right] ? right : left
+  }
+
+  const _binarySearch = sorted => {
+    let left = 0
+    let right = sorted.length - 1
+
+    while (left + 1 < right) {
+      const midIdx = left + Math.floor((right - left) / 2)
+      const midNum = sorted[midIdx]
+
+      if (midNum === target) return midIdx
+
+      target > midNum
+        ? left = midIdx + 1
+        : right = midIdx - 1
+    }
+
+    if (sorted[left] === target) return left
+    if (sorted[right] === target) return right
+    return -1
+  }
+
+  const minNumIdx = _findMinNumIdx(nums)
+
+  if (target > nums[nums.length - 1]) {
+    return _binarySearch(nums.slice(0, minNumIdx))
+  }
+
+  const targetIdx = _binarySearch(nums.slice(minNumIdx))
+  return targetIdx === -1
+    ? -1
+    : minNumIdx + targetIdx
 }
 // @lc code=end

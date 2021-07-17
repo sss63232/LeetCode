@@ -55,13 +55,10 @@
 const findClosestElements = function (arr, k, x) {
   let left = 0
   let right = arr.length - 1
-
   while (right - left + 1 !== k) {
-    if (arr[right] - x < x - arr[left]) {
-      left++
-    } else {
-      right--
-    }
+    const xToLeft = Math.abs(x - arr[left])
+    const xToRight = Math.abs(x - arr[right])
+    xToLeft > xToRight ? left++ : right--
   }
 
   return arr.slice(left, right + 1)
