@@ -60,6 +60,7 @@
 
 // @lc code=start
 /**
+ * 二叉樹
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
@@ -72,18 +73,38 @@
  * @return {void} Do not return anything, modify root in-place instead.
  */
 const flatten = function (root) {
-  let pre = null
-  const _dfs = (root) => {
-    if (!root) {
-      return
-    }
-    _dfs(root.right)
-    _dfs(root.left)
-    root.right = pre
+  // if (!root) return null
+
+  // const { left, right } = root
+  // const flatLeft = flatten(left)
+  // const flatRight = flatten(right)
+
+  // if (!flatLeft) {
+  //   root.right = flatRight
+  //   return root
+  // }
+
+  // root.left = null
+  // root.right = flatLeft
+  // let mostRight = root.right
+  // while (mostRight.right) mostRight = mostRight.right
+  // mostRight.right = flatRight
+
+  // return root
+
+  if (!root) return null
+  const { left, right } = root
+  const flatLeftLast = flatten(left)
+  const flatRightLast = flatten(right)
+
+  if (root.left) {
+    root.right = root.left
     root.left = null
-    pre = root
+    flatLeftLast.right = right
   }
 
-  _dfs(root)
+  if (flatRightLast) return flatRightLast
+  if (flatLeftLast) return flatLeftLast
+  return root
 }
 // @lc code=end

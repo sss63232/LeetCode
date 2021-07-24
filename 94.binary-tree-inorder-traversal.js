@@ -80,13 +80,12 @@
  * }
  */
 /**
+ * 二叉樹, binary tree
  * @param {TreeNode} root
  * @return {number[]}
  */
 const inorderTraversal = function (root) {
-  if (!root) {
-    return []
-  }
+  if (!root) return []
 
   const ans = []
   const stack = []

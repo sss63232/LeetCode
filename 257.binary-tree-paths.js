@@ -53,21 +53,29 @@
  * }
  */
 /**
+ * binary tree
  * @param {TreeNode} root
  * @return {string[]}
  */
 const binaryTreePaths = function (root) {
-  if (!root) return []
+  const toLeafPaths = []
 
-  const { val, left, right } = root
-  const leftPaths = binaryTreePaths(left)
-  const rightPaths = binaryTreePaths(right)
+  const _traverse = (node, path) => {
+    if (!node) return
 
-  if (leftPaths.length === 0 && rightPaths.length === 0) return [`${val}`]
+    const { val, left, right } = node
+    const curPath = [...path, val]
+    if (!left && !right) {
+      toLeafPaths.push(curPath)
+      return
+    }
 
-  return [
-    ...leftPaths,
-    ...rightPaths
-  ].map(path => `${val}->${path}`)
+    _traverse(left, curPath)
+    _traverse(right, curPath)
+  }
+
+  _traverse(root, [])
+
+  return toLeafPaths.map(path => path.join('->'))
 }
 // @lc code=end
