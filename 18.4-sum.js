@@ -55,46 +55,51 @@
  * @param {number[]} nums
  * @param {number} target
  * @return {number[][]}
+ *
+ * two pointers
+ *
  */
 const fourSum = function (nums, target) {
-  const _get2sumNumbers = (sortedNumbers, targetOf2sum) => {
-    let leftIdx = 0
-    let rightIdx = sortedNumbers.length - 1
+  const _get2sumPairs = (sortedNumbers, targetOf2sum) => {
+    let left = 0
+    let right = sortedNumbers.length - 1
 
-    const numbers = []
-    while (leftIdx < rightIdx) {
-      const leftNum = sortedNumbers[leftIdx]
-      const rightNum = sortedNumbers[rightIdx]
+    const pairs = []
+    while (left < right) {
+      const leftNum = sortedNumbers[left]
+      const rightNum = sortedNumbers[right]
+
+      if (leftNum === sortedNumbers[left - 1]) {
+        left++
+        continue
+      }
+
+      if (rightNum === sortedNumbers[right + 1]) {
+        right--
+        continue
+      }
+
       const sum = leftNum + rightNum
 
       if (sum === targetOf2sum) {
-        numbers.push([leftNum, rightNum])
-        rightIdx--
-        leftIdx++
-        while (
-          leftIdx < rightIdx &&
-          sortedNumbers[rightIdx] === sortedNumbers[rightIdx + 1]
-        )rightIdx--
-        while (
-          leftIdx < rightIdx &&
-          sortedNumbers[leftIdx] === sortedNumbers[leftIdx - 1]
-        )leftIdx++
-
+        pairs.push([leftNum, rightNum])
+        right--
+        left++
         continue
       }
 
       if (sum > targetOf2sum) {
-        rightIdx--
+        right--
       } else {
-        leftIdx++
+        left++
       }
     }
 
-    return numbers
+    return pairs
   }
 
   const _nSum = (n, sortedNumbers, sumTarget) => {
-    if (n === 2) return _get2sumNumbers(sortedNumbers, sumTarget)
+    if (n === 2) return _get2sumPairs(sortedNumbers, sumTarget)
 
     const results = []
     for (let i = 0; i < sortedNumbers.length; i++) {
@@ -109,9 +114,7 @@ const fourSum = function (nums, target) {
     return results
   }
 
-  nums.sort((a, b) => a - b)
-
-  return _nSum(4, nums, target)
+  return _nSum(4, nums.sort((a, b) => a - b), target)
 
   // const results = []
   // for (let i = 0; i < nums.length; i++) {

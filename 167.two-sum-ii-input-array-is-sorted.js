@@ -43,18 +43,15 @@
  * @return {number[]}
  */
 const twoSum = function (numbers, target) {
-  let i = 0
-  let j = numbers.length - 1
-  while (i !== j) {
-    const sum = numbers[i] + numbers[j]
-    if (sum === target) {
-      return [i + 1, j + 1]
-    }
-
-    if (sum > target) {
-      j--
+  let left = 0
+  let right = numbers.length - 1
+  while (left < right) {
+    const sum = numbers[left] + numbers[right]
+    if (sum === target) return [left + 1, right + 1]
+    if (target > sum) {
+      left++
     } else {
-      i++
+      right--
     }
   }
 }

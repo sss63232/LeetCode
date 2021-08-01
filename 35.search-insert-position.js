@@ -59,19 +59,16 @@ const searchInsert = function (nums, target) {
   let left = 0
   let right = nums.length - 1
 
+  if (target < nums[left]) return left
   if (target > nums[right]) return right + 1
 
-  while (left < right) {
+  while (left + 1 < right) {
     const mid = left + Math.floor((right - left) / 2)
     const midNum = nums[mid]
-    if (midNum === target) return mid
-    if (midNum < target) {
-      left = mid + 1
-    } else {
-      right = mid
-    }
+    if (target === midNum) return mid
+    target > midNum ? left = mid : right = mid
   }
 
-  return left
+  return target === nums[left] ? left : right
 }
 // @lc code=end
