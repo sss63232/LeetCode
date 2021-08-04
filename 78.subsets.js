@@ -52,17 +52,19 @@
  */
 const subsets = function (nums) {
   const results = []
-  const _dfs = (numIdx, path) => {
-    if (numIdx === nums.length) {
-      results.push([...path])
+
+  const _dfs = (path, idx) => {
+    if (idx >= nums.length) {
+      results.push(path)
       return
     }
 
-    _dfs(numIdx + 1, path)
-    _dfs(numIdx + 1, [...path, nums[numIdx]])
+    const num = nums[idx]
+    _dfs([...path, num], idx + 1)
+    _dfs(path, idx + 1)
   }
 
-  _dfs(0, [])
+  _dfs([], 0)
   return results
 }
 // @lc code=end
