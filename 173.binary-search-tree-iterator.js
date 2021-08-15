@@ -89,6 +89,8 @@
  */
 /**
  * @param {TreeNode} root
+ *
+ * 非遞歸的中序遍歷
  */
 const BSTIterator = function (root) {
   BSTIterator.prototype.stack = []

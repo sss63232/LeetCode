@@ -70,10 +70,16 @@
 /**
  * 二叉樹，binary search tree
  *
- * 在root为根的二叉树中找A,B的LCA:
- * 如果找到了就返回这个LCA
- * 如果只碰到A，就返回A
- * 如果只碰到B，就返回B
+ * AB 要嘛同在 left
+ * AB 要嘛同在 right
+ * AB 要嘛分別在 left, right
+ *
+ *
+ * 在root为根的 left, right 子樹中找A,B的LCA:
+ * 如果找到了 LCA, 就返回这个LCA
+ *
+ * 如果沒找到，且有找到A，就返回A
+ * 如果沒找到，且有碰到B，就返回B
  * 如果都没有，就返回null
  * @param {TreeNode} root
  * @param {TreeNode} p

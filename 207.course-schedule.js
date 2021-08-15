@@ -65,29 +65,29 @@
  * @return {boolean}
  */
 const canFinish = function (numCourses, prerequisites) {
-  if (!prerequisites.length) return true
+  const courses = new Array(numCourses).fill(0).map(() => ({
+    inDegree: 0,
+    nextClasses: []
+  }))
 
-  const courses = new Array(numCourses)
-    .fill(0)
-    .map(() => ({ inDegree: 0, nextCourses: [] }))
-
-  prerequisites.forEach(([higherCourseIdx, lowerCourseIdx]) => {
-    courses[higherCourseIdx].inDegree++
-    courses[lowerCourseIdx].nextCourses.push(courses[higherCourseIdx])
+  prerequisites.forEach(p => {
+    courses[p[0]].inDegree++
+    courses[p[1]].nextClasses.push(courses[p[0]])
   })
 
-  const stack = [...courses.filter(({ inDegree }) => inDegree === 0)]
-
-  while (stack.length) {
-    const cur = stack.pop()
-    numCourses--
-
-    cur.nextCourses.forEach(nextCourse => {
-      nextCourse.inDegree--
-      if (nextCourse.inDegree === 0) stack.push(nextCourse)
+  let finishedCount = 0
+  const queue = courses.filter(course => course.inDegree === 0)
+  while (queue.length) {
+    const cur = queue.shift()
+    finishedCount++
+    cur.nextClasses.forEach(c => {
+      c.inDegree--
+      if (c.inDegree === 0) {
+        queue.push(c)
+      }
     })
   }
 
-  return numCourses === 0
+  return finishedCount === numCourses
 }
 // @lc code=end

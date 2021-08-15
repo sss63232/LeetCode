@@ -67,11 +67,11 @@ const zigzagLevelOrder = function (root) {
     return []
   }
 
-  const appendLevelOf = level => node => ({ node, level })
+  const appendLevelNode = level => node => ({ node, level })
   const isFromLeftToRight = level => level % 2 === 0
 
   const result = []
-  const queue = [appendLevelOf(0)(root)]
+  const queue = [appendLevelNode(0)(root)]
   while (queue.length) {
     const levelNode = queue.shift()
     const {
@@ -95,7 +95,7 @@ const zigzagLevelOrder = function (root) {
         result[level] = [val]
       }
 
-      const toNextLevel = appendLevelOf(level + 1)
+      const toNextLevel = appendLevelNode(level + 1)
       queue.push(toNextLevel(left), toNextLevel(right))
     }
   }

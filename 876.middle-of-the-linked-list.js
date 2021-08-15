@@ -68,16 +68,13 @@
  * @return {ListNode}
  */
 const middleNode = function (head) {
-  const nodes = []
-
-  let node = head
-  while (node) {
-    nodes.push(node)
-    node = node.next
+  let fast = head
+  let slow = head
+  while (fast && fast.next) {
+    fast = fast.next.next
+    slow = slow.next
   }
 
-  return nodes[
-    Math.floor(nodes.length / 2)
-  ]
+  return slow
 }
 // @lc code=end

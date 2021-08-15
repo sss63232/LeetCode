@@ -69,16 +69,35 @@
 const peakIndexInMountainArray = function (arr) {
   let left = 0
   let right = arr.length - 1
-
   while (left + 1 < right) {
-    const midIdx = left + Math.floor((right - left) / 2)
-    arr[midIdx + 1] > arr[midIdx]
-      ? left = midIdx + 1
-      : right = midIdx
+    const mid = left + Math.floor((right - left) / 2)
+    if (arr[mid + 1] > arr[mid]) {
+      left = mid + 1
+    } else {
+      right = mid
+    }
   }
 
-  return arr[left] > arr[right]
-    ? left
-    : right
+  console.log('left: ', left)
+  console.log('right: ', right)
+  if (arr[right] >= arr[left]) {
+    return right
+  } else {
+    return left
+  }
+
+  // let left = 0
+  // let right = arr.length - 1
+
+  // while (left + 1 < right) {
+  //   const midIdx = left + Math.floor((right - left) / 2)
+  //   arr[midIdx + 1] > arr[midIdx]
+  //     ? left = midIdx + 1
+  //     : right = midIdx
+  // }
+
+  // return arr[left] > arr[right]
+  //   ? left
+  //   : right
 }
 // @lc code=end

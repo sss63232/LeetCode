@@ -119,14 +119,16 @@ const cloneGraph = function (node) {
   const stack = [node]
   while (stack.length) {
     const cur = stack.pop()
-    visited.add(cur.val)
 
     clones[cur.val] = clones[cur.val] || new Node(cur.val)
 
     cur.neighbors.forEach(neighbor => {
       clones[neighbor.val] = clones[neighbor.val] || new Node(neighbor.val)
 
-      if (!visited.has(neighbor.val)) stack.push(neighbor)
+      if (!visited.has(neighbor.val)) {
+        stack.push(neighbor)
+        visited.add(cur.val)
+      }
     })
 
     clones[cur.val].neighbors = cur.neighbors.map(neighbor => clones[neighbor.val])
