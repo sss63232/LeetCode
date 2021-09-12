@@ -51,20 +51,35 @@
  * @return {number[][]}
  */
 const subsets = function (nums) {
-  const results = []
+  // const results = []
 
-  const _dfs = (path, idx) => {
-    if (idx >= nums.length) {
-      results.push(path)
+  // const _dfs = (path, idx) => {
+  //   if (idx >= nums.length) {
+  //     results.push(path)
+  //     return
+  //   }
+
+  //   const num = nums[idx]
+  //   _dfs([...path, num], idx + 1)
+  //   _dfs(path, idx + 1)
+  // }
+
+  // _dfs([], 0)
+  // return results
+
+  const ans = []
+  const _dfs = (path, i) => {
+    if (i === nums.length) {
+      ans.push(path)
       return
     }
 
-    const num = nums[idx]
-    _dfs([...path, num], idx + 1)
-    _dfs(path, idx + 1)
+    const num = nums[i]
+    _dfs([...path, num], i + 1)
+    _dfs([...path], i + 1)
   }
 
   _dfs([], 0)
-  return results
+  return ans
 }
 // @lc code=end

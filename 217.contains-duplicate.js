@@ -43,7 +43,7 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-var containsDuplicate = function (nums) {
+let containsDuplicate = function (nums) {
   return nums.length !== new Set(nums).size
 }
 // @lc code=end

@@ -52,24 +52,24 @@ const moveZeroes = function (nums) {
     arr[idx2] = tmp
   }
 
-  // let nonZeroTailIdx = 0
-  // for (let i = 0; i < nums.length; i++) {
-  //   if (nums[i] !== 0) {
-  //     _swap(nums, nonZeroTailIdx, i)
-  //     nonZeroTailIdx++
-  //   }
-  // }
-
   let nonZeroTailIdx = 0
-  let i = 0
-  while (i < nums.length) {
+  for (let i = 0; i < nums.length; i++) {
     if (nums[i] !== 0) {
       _swap(nums, nonZeroTailIdx, i)
       nonZeroTailIdx++
     }
-
-    i++
   }
+
+  // let nonZeroTailIdx = 0
+  // let i = 0
+  // while (i < nums.length) {
+  //   if (nums[i] !== 0) {
+  //     _swap(nums, nonZeroTailIdx, i)
+  //     nonZeroTailIdx++
+  //   }
+
+  //   i++
+  // }
 
   return nums
 }

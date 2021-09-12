@@ -44,14 +44,15 @@
  * @return {ListNode}
  */
 var addTwoNumbers = function (l1, l2) {
-  let resultNode = new ListNode(0)
+  let dummyHeadOfResult = new ListNode(0)
 
-  let currentNode = resultNode
+  let curResult = dummyHeadOfResult
   let carry = 0
   while (
     l1 !== null ||
     l2 !== null ||
-    carry > 0) {
+    carry > 0
+  ) {
     let sum = 0
 
     if (l1 !== null) {
@@ -66,12 +67,12 @@ var addTwoNumbers = function (l1, l2) {
 
     sum += carry
 
-    currentNode.next = new ListNode(sum % 10)
-    currentNode = currentNode.next
+    curResult.next = new ListNode(sum % 10)
+    curResult = curResult.next
 
     carry = Math.floor(sum / 10)
   }
 
-  return resultNode.next
+  return dummyHeadOfResult.next
 }
 // @lc code=end
