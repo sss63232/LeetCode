@@ -69,23 +69,51 @@ const numIslands = function (grid) {
   }
 
   const rows = grid.length
-  const _turnZero = (grid) => (x, y) => {
-    if (
-      x < 0 ||
-            x >= rows ||
-            y < 0 ||
-            y >= cols ||
-            grid[x][y] === '0'
-    ) {
+  const _turnZeroByDFS = grid => (x, y) => {
+    if (x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] === '0') {
       return
     }
 
     grid[x][y] = '0'
 
-    _turnZero(grid)(x + 1, y)
-    _turnZero(grid)(x - 1, y)
-    _turnZero(grid)(x, y + 1)
-    _turnZero(grid)(x, y - 1)
+    _turnZeroByDFS(grid)(x + 1, y)
+    _turnZeroByDFS(grid)(x - 1, y)
+    _turnZeroByDFS(grid)(x, y + 1)
+    _turnZeroByDFS(grid)(x, y - 1)
+  }
+
+  const _turnZeroByBFS = grid => (rowIdx, colIdx) => {
+    const dx = [0, 1, 0, -1]
+    const dy = [1, 0, -1, 0]
+
+    const discovered = new Set()
+    const queue = []
+
+    queue.push({ rowIdx, colIdx })
+    discovered.add(`${rowIdx}_${colIdx}`)
+    while (queue.length) {
+      const cur = queue.shift()
+      grid[cur.rowIdx][cur.colIdx] = '0'
+
+      for (let i = 0; i < 4; i++) {
+        const nextRowIdx = cur.rowIdx + dy[i]
+        const nextColIdx = cur.colIdx + dx[i]
+        if (
+          nextRowIdx >= 0 &&
+          nextRowIdx < rows &&
+          nextColIdx >= 0 &&
+          nextColIdx < cols &&
+          grid[nextRowIdx][nextColIdx] === '1' &&
+          !discovered.has(`${nextRowIdx}_${nextColIdx}`)
+        ) {
+          queue.push({
+            rowIdx: nextRowIdx,
+            colIdx: nextColIdx
+          })
+          discovered.add(`${nextRowIdx}_${nextColIdx}`)
+        }
+      }
+    }
   }
 
   let islandsCount = 0
@@ -93,7 +121,8 @@ const numIslands = function (grid) {
     for (let j = 0; j < cols; j++) {
       if (grid[i][j] === '1') {
         islandsCount++
-        _turnZero(grid)(i, j)
+        _turnZeroByBFS(grid)(i, j)
+        // _turnZeroByDFS(grid)(i, j)
       }
     }
   }

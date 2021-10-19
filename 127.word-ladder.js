@@ -74,9 +74,7 @@
  */
 const ladderLength = function (beginWord, endWord, wordList) {
   const wordListSet = new Set(wordList)
-  if (!wordListSet.has(endWord)) {
-    return 0
-  }
+  if (!wordListSet.has(endWord)) return 0
 
   const endWordSet = new Set([endWord])
 

@@ -62,9 +62,7 @@ const search = function (nums, target) {
     const midNum = nums[midIdx]
     if (midNum === target) return midIdx
 
-    midNum < target
-      ? left = midIdx + 1
-      : right = midIdx - 1
+    midNum < target ? (left = midIdx + 1) : (right = midIdx - 1)
   }
 
   if (nums[left] === target) return left

@@ -68,17 +68,29 @@ const levelOrder = function (root) {
   const queue = [{ node: root, level: 0 }]
   while (queue.length) {
     const cur = queue.shift()
-
     if (result[cur.level]) {
       result[cur.level].push(cur.node.val)
     } else {
       result[cur.level] = [cur.node.val]
     }
-
     cur.node.left && queue.push({ node: cur.node.left, level: cur.level + 1 })
     cur.node.right && queue.push({ node: cur.node.right, level: cur.level + 1 })
   }
-
   return result
+  // if (!root) return []
+  // const result = []
+  // const queue = [root]
+  // while (queue.length) {
+  //   const levelLength = queue.length
+  //   const levelVals = []
+  //   for (let i = 0; i < levelLength; i++) {
+  //     const cur = queue.shift()
+  //     levelVals.push(cur.val)
+  //     cur.left && queue.push(cur.left)
+  //     cur.right && queue.push(cur.right)
+  //   }
+  //   result.push(levelVals)
+  // }
+  // return result
 }
 // @lc code=end

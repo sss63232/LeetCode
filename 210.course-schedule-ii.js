@@ -77,7 +77,9 @@
  * @return {number[]}
  */
 const findOrder = function (numCourses, prerequisites) {
-  const courses = new Array(numCourses).fill(0).map((_, idx) => ({ id: idx, inDegree: 0, next: [] }))
+  const courses = new Array(numCourses)
+    .fill(0)
+    .map((_, idx) => ({ id: idx, inDegree: 0, next: [] }))
   prerequisites.forEach(p => {
     courses[p[0]].inDegree++
     courses[p[1]].next.push(courses[p[0]])

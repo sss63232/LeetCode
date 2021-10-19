@@ -76,8 +76,12 @@ const knightProbability = function (N, K, r, c) {
   const cacheMap = new Map()
 
   const _getValidTimes = (N, K, r, c) => {
-    if (r < 0 || r >= N || c < 0 || c >= N) { return 0 }
-    if (K === 0) { return 1 }
+    if (r < 0 || r >= N || c < 0 || c >= N) {
+      return 0
+    }
+    if (K === 0) {
+      return 1
+    }
 
     const key = `${K}_${r}_${c}`
     if (cacheMap.has(key)) {

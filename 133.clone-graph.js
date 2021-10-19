@@ -111,27 +111,45 @@
  * @return {Node}
  */
 const cloneGraph = function (node) {
+  // if (!node) return null
+  // const clones = []
+  // const visited = new Set()
+  // const stack = [node]
+  // while (stack.length) {
+  //   const cur = stack.pop()
+  //   clones[cur.val] = clones[cur.val] || new Node(cur.val)
+  //   cur.neighbors.forEach(neighbor => {
+  //     clones[neighbor.val] = clones[neighbor.val] || new Node(neighbor.val)
+  //     if (!visited.has(neighbor.val)) {
+  //       stack.push(neighbor)
+  //       visited.add(cur.val)
+  //     }
+  //   })
+  //   clones[cur.val].neighbors = cur.neighbors.map(
+  //     neighbor => clones[neighbor.val]
+  //   )
+  // }
+  // return clones[1]
+
   if (!node) return null
-
-  const clones = []
   const visited = new Set()
+  const clones = []
 
-  const stack = [node]
-  while (stack.length) {
-    const cur = stack.pop()
-
+  visited.add(node.val)
+  const queue = [node]
+  while (queue.length) {
+    const cur = queue.shift()
     clones[cur.val] = clones[cur.val] || new Node(cur.val)
 
-    cur.neighbors.forEach(neighbor => {
-      clones[neighbor.val] = clones[neighbor.val] || new Node(neighbor.val)
+    cur.neighbors.forEach(n => {
+      clones[n.val] = clones[n.val] || new Node(n.val)
 
-      if (!visited.has(neighbor.val)) {
-        stack.push(neighbor)
-        visited.add(cur.val)
+      clones[n.val].neighbors.push(clones[cur.val])
+      if (!visited.has(n.val)) {
+        queue.push(n)
+        visited.add(n.val)
       }
     })
-
-    clones[cur.val].neighbors = cur.neighbors.map(neighbor => clones[neighbor.val])
   }
 
   return clones[1]

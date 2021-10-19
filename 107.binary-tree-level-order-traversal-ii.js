@@ -65,19 +65,17 @@
 const levelOrderBottom = function (root) {
   const output = []
   if (root) {
-    const queue = [{
-      level: 0,
-      node: root
-    }]
-    while (queue.length > 0) {
+    const queue = [
+      {
+        level: 0,
+        node: root
+      }
+    ]
+    while (queue.length) {
       const levelNode = queue.shift()
       const {
         level,
-        node: {
-          val,
-          left,
-          right
-        }
+        node: { val, left, right }
       } = levelNode
 
       if (output[level]) {

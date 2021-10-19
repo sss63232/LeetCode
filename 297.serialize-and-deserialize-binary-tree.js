@@ -85,11 +85,27 @@
  * @return {string}
  */
 const serialize = function (root) {
-  if (!root) return '#'
+  /// DFS
+  // if (!root) return '#'
+  // const serializedLeft = serialize(root.left)
+  // const serializedRight = serialize(root.right)
+  // return `${root.val},${serializedLeft},${serializedRight}`
 
-  const serializedLeft = serialize(root.left)
-  const serializedRight = serialize(root.right)
-  return `${root.val},${serializedLeft},${serializedRight}`
+  /// BFS
+  if (!root) return '#'
+  const vals = []
+  const queue = [root]
+  while (queue.length) {
+    const cur = queue.shift()
+    if (cur === null) {
+      vals.push('#')
+    } else {
+      vals.push(cur.val)
+      queue.push(cur.left, cur.right)
+    }
+  }
+
+  return vals.join(',')
 }
 
 /**
@@ -99,17 +115,43 @@ const serialize = function (root) {
  * @return {TreeNode}
  */
 const deserialize = function (data) {
-  const _buildTree = list => {
-    const rootVal = list.shift()
+  /// DFS
+  // const _buildTree = list => {
+  //   const rootVal = list.shift()
+  //   if (rootVal === '#') return null
+  //   const root = new TreeNode(rootVal)
+  //   root.left = _buildTree(list)
+  //   root.right = _buildTree(list)
+  //   return root
+  // }
+  // return _buildTree(data.split(','))
 
-    if (rootVal === '#') return null
-    const root = new TreeNode(rootVal)
-    root.left = _buildTree(list)
-    root.right = _buildTree(list)
-    return root
+  /// BFS
+  if (data === '#') return null
+
+  const vals = data.split(',')
+
+  const root = new TreeNode(vals[0])
+  const queue = [root]
+  let cursor = 1
+  while (cursor < vals.length) {
+    const cur = queue.shift()
+
+    const leftVal = vals[cursor]
+
+    if (leftVal !== '#') {
+      cur.left = new TreeNode(leftVal)
+      queue.push(cur.left)
+    }
+    const rightVal = vals[cursor + 1]
+    if (rightVal !== '#') {
+      cur.right = new TreeNode(rightVal)
+      queue.push(cur.right)
+    }
+    cursor += 2
   }
 
-  return _buildTree(data.split(','))
+  return root
 }
 
 /**
