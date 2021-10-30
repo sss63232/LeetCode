@@ -75,28 +75,29 @@ const knightProbability = function (N, K, r, c) {
 
   const cacheMap = new Map()
 
-  const _getValidTimes = (N, K, r, c) => {
-    if (r < 0 || r >= N || c < 0 || c >= N) {
-      return 0
-    }
-    if (K === 0) {
-      return 1
-    }
+  const _inbound = (rowIdx, colIdx) =>
+    rowIdx >= 0 && colIdx >= 0 && rowIdx < N && colIdx < N
 
-    const key = `${K}_${r}_${c}`
-    if (cacheMap.has(key)) {
-      return cacheMap.get(key)
-    }
+  const _getValidTimes = (remainingSteps, rowIdx, colIdx) => {
+    if (!_inbound(rowIdx, colIdx)) return 0
+    if (remainingSteps === 0) return 1
+
+    const key = `${remainingSteps}_${rowIdx}_${colIdx}`
+    if (cacheMap.has(key)) return cacheMap.get(key)
 
     let curTimes = 0
     for (let i = 0; i < 8; i++) {
-      curTimes += _getValidTimes(N, K - 1, r + dx[i], c + dy[i])
+      curTimes += _getValidTimes(
+        remainingSteps - 1,
+        rowIdx + dx[i],
+        colIdx + dy[i]
+      )
     }
 
     cacheMap.set(key, curTimes)
     return curTimes
   }
 
-  return _getValidTimes(N, K, r, c) / Math.pow(8, K)
+  return _getValidTimes(K, r, c) / Math.pow(8, K)
 }
 // @lc code=end

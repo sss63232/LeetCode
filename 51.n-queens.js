@@ -60,26 +60,27 @@ const solveNQueens = function (n) {
   const slash1 = new Set()
   const slash2 = new Set()
 
-  const _helper = (rowIdx, prev) => {
+  const _helper = (rowIdx, queenIdxList) => {
     if (rowIdx === n) {
-      results.push([...prev])
+      results.push([...queenIdxList])
       return
     }
 
     for (let columnIdx = 0; columnIdx < n; columnIdx++) {
       if (
-        prev.indexOf(columnIdx) >= 0 ||
+        queenIdxList.indexOf(columnIdx) >= 0 ||
         slash1.has(rowIdx + columnIdx) ||
         slash2.has(rowIdx - columnIdx)
-      ) continue
+      )
+        continue
 
-      prev.push(columnIdx)
+      queenIdxList.push(columnIdx)
       slash1.add(rowIdx + columnIdx)
       slash2.add(rowIdx - columnIdx)
 
-      _helper(rowIdx + 1, prev)
+      _helper(rowIdx + 1, queenIdxList)
 
-      prev.pop()
+      queenIdxList.pop()
       slash1.delete(rowIdx + columnIdx)
       slash2.delete(rowIdx - columnIdx)
     }
@@ -87,11 +88,12 @@ const solveNQueens = function (n) {
 
   _helper(0, [])
 
-  return results.map(result => result.map((queenColIdx) => {
-    const curRow = new Array(n).fill('.')
-    curRow[queenColIdx] = 'Q'
-    return curRow.join('')
-  })
+  return results.map(result =>
+    result.map(queenColIdx => {
+      const curRow = new Array(n).fill('.')
+      curRow[queenColIdx] = 'Q'
+      return curRow.join('')
+    })
   )
 }
 
