@@ -55,14 +55,31 @@
  * @return {number}
  */
 const search = function (nums, target) {
+  // let left = 0
+  // let right = nums.length - 1
+  // while (left + 1 < right) {
+  //   const midIdx = left + Math.floor(right - left / 2)
+  //   const midNum = nums[midIdx]
+  //   if (midNum === target) return midIdx
+  //   midNum < target ? (left = midIdx + 1) : (right = midIdx - 1)
+  // }
+  // if (nums[left] === target) return left
+  // if (nums[right] === target) return right
+  // return -1
+
+  if (nums.length === 0) return -1
+
   let left = 0
   let right = nums.length - 1
   while (left + 1 < right) {
-    const midIdx = left + Math.floor(right - left / 2)
+    const midIdx = left + Math.floor((right - left) / 2)
     const midNum = nums[midIdx]
     if (midNum === target) return midIdx
-
-    midNum < target ? (left = midIdx + 1) : (right = midIdx - 1)
+    if (target > midNum) {
+      left = midIdx + 1
+    } else {
+      right = midIdx - 1
+    }
   }
 
   if (nums[left] === target) return left

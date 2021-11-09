@@ -38,9 +38,9 @@
  */
 
 /**
-  * references:
-  * @see [詳細解讀動態規劃的實現, 易理解 - 最大子序和 - 力扣（LeetCode）](https://leetcode-cn.com/problems/maximum-subarray/solution/xiang-xi-jie-du-dong-tai-gui-hua-de-shi-xian-yi-li/)
-  */
+ * references:
+ * @see [詳細解讀動態規劃的實現, 易理解 - 最大子序和 - 力扣（LeetCode）](https://leetcode-cn.com/problems/maximum-subarray/solution/xiang-xi-jie-du-dong-tai-gui-hua-de-shi-xian-yi-li/)
+ */
 const maxSubArray = function (nums) {
   // const maxSumsOfEndingOn = []
   // maxSumsOfEndingOn[0] = nums[0]

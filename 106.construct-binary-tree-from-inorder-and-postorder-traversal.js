@@ -71,7 +71,10 @@ const buildTree = function (inorder, postorder) {
 
   const root = new TreeNode(rootValue)
   root.left = buildTree(inorder.slice(0, midIdx), postorder.slice(0, midIdx))
-  root.right = buildTree(inorder.slice(midIdx + 1), postorder.slice(midIdx, lastIdx))
+  root.right = buildTree(
+    inorder.slice(midIdx + 1),
+    postorder.slice(midIdx, lastIdx)
+  )
   return root
 }
 // @lc code=end

@@ -82,9 +82,8 @@
  * @return {TreeNode}
  */
 const subtreeWithAllDeepest = function (root) {
-  const _getDepth = node => node
-    ? Math.max(_getDepth(node.left), _getDepth(node.right)) + 1
-    : 0
+  const _getDepth = node =>
+    node ? Math.max(_getDepth(node.left), _getDepth(node.right)) + 1 : 0
 
   if (!root) return null
   const { left, right } = root

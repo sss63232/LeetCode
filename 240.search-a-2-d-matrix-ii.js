@@ -52,9 +52,7 @@ const searchMatrix = function (matrix, target) {
   while (row >= 0 && column <= matrix[0].length - 1) {
     const pivot = matrix[row][column]
     if (pivot === target) return true
-    pivot > target
-      ? row--
-      : column++
+    pivot > target ? row-- : column++
   }
 
   return false

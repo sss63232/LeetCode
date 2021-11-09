@@ -56,11 +56,15 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function (s) {
-  if (s === '') { return 0 }
+  if (s === '') {
+    return 0
+  }
 
   const _hasDuplicationIn = charArr => {
     const charArrLength = charArr.length
-    if (charArrLength <= 1) { return false }
+    if (charArrLength <= 1) {
+      return false
+    }
 
     const set = new Set(charArr)
     return set.size < charArrLength
@@ -85,5 +89,20 @@ var lengthOfLongestSubstring = function (s) {
   }
 
   return longestLength
+
+  // if (!s) return 0
+
+  // let max = 0
+  // let arr = []
+  // s.split('').forEach(char => {
+  //   const charInArrIdx = arr.indexOf(char)
+  //   if (charInArrIdx >= 0) {
+  //     arr.splice(0, charInArrIdx + 1)
+  //   }
+  //   arr.push(char)
+  //   max = Math.max(max, arr.length)
+  // })
+
+  // return max
 }
 // @lc code=end

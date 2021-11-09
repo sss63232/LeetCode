@@ -39,6 +39,8 @@
  * }
  */
 /**
+ * linked list
+ *
  * @param {ListNode} l1
  * @param {ListNode} l2
  * @return {ListNode}
@@ -48,11 +50,7 @@ var addTwoNumbers = function (l1, l2) {
 
   let curResult = dummyHeadOfResult
   let carry = 0
-  while (
-    l1 !== null ||
-    l2 !== null ||
-    carry > 0
-  ) {
+  while (l1 !== null || l2 !== null || carry > 0) {
     let sum = 0
 
     if (l1 !== null) {

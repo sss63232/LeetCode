@@ -80,18 +80,25 @@
  * @return {TreeNode}
  */
 const constructMaximumBinaryTree = function (nums) {
+  // if (!nums.length) return null
+  // if (nums.length === 1) return new TreeNode(nums[0])
+  // let maxNumIdx = 0
+  // for (let i = 1; i < nums.length; i++) {
+  //   maxNumIdx = nums[i] > nums[maxNumIdx] ? i : maxNumIdx
+  // }
+  // return new TreeNode(
+  //   nums[maxNumIdx],
+  //   constructMaximumBinaryTree(nums.slice(0, maxNumIdx)),
+  //   constructMaximumBinaryTree(nums.slice(maxNumIdx + 1))
+  // )
+
   if (!nums.length) return null
-  if (nums.length === 1) return new TreeNode(nums[0])
 
-  let maxNumIdx = 0
-  for (let i = 1; i < nums.length; i++) {
-    maxNumIdx = nums[i] > nums[maxNumIdx] ? i : maxNumIdx
-  }
-
-  return new TreeNode(
-    nums[maxNumIdx],
-    constructMaximumBinaryTree(nums.slice(0, maxNumIdx)),
-    constructMaximumBinaryTree(nums.slice(maxNumIdx + 1))
-  )
+  const maxNum = Math.max(...nums)
+  const maxNumIdx = nums.findIndex(num => num === maxNum)
+  const root = new TreeNode(maxNum)
+  root.left = constructMaximumBinaryTree(nums.slice(0, maxNumIdx))
+  root.right = constructMaximumBinaryTree(nums.slice(maxNumIdx + 1))
+  return root
 }
 // @lc code=end

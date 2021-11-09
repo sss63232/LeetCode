@@ -64,9 +64,7 @@ const searchMatrix = function (matrix, target) {
     const pivot = matrix[row][column]
     if (pivot === target) return true
 
-    pivot > target
-      ? row--
-      : column++
+    pivot > target ? row-- : column++
   }
 
   return false
