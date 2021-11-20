@@ -49,7 +49,13 @@
  */
 const groupAnagrams = function (strs) {
   return Object.values(
-    strs.map(str => str.split('').sort().join(''))
+    strs
+      .map(str =>
+        str
+          .split('')
+          .sort()
+          .join('')
+      )
       .reduce((acc, cur, idx) => {
         if (acc[cur]) {
           acc[cur].push(strs[idx])

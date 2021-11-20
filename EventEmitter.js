@@ -1,9 +1,9 @@
 class EventEmitter {
-  constructor() {
+  constructor () {
     this._listeners = {}
   }
 
-  on(eventName, callback) {
+  on (eventName, callback) {
     if (this._listeners[eventName]) {
       this._listeners[eventName].push(callback)
     } else {
@@ -11,16 +11,16 @@ class EventEmitter {
     }
   }
 
-  once(eventName, callback) {
-    const onceWrappedFn = (e) => {
-      callback(e)
+  once (eventName, callback) {
+    const onceWrappedFn = event => {
+      callback(event)
       this.off(eventName, onceWrappedFn)
     }
 
     this.on(eventName, onceWrappedFn)
   }
 
-  emit(eventName, event) {
+  emit (eventName, event) {
     if (!this._listeners[eventName]) {
       throw new Error(`${eventName} does not exit`)
     }
@@ -28,12 +28,14 @@ class EventEmitter {
     this._listeners[eventName].forEach(cb => cb(event))
   }
 
-  off(eventName, callback) {
+  off (eventName, callback) {
     if (!this._listeners[eventName]) {
       throw new Error(`${eventName} does not exit`)
     }
 
-    this._listeners[eventName] = this._listeners[eventName].filter(cb => cb !== callback)
+    this._listeners[eventName] = this._listeners[eventName].filter(
+      cb => cb !== callback
+    )
   }
 }
 

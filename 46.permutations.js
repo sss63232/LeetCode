@@ -44,24 +44,38 @@
  * @return {number[][]}
  */
 const permute = function (nums) {
-  const n = nums.length
-  if (n === 1) return [[nums[0]]]
-
-  const results = []
-  const _dfs = (path, selectedIdxSet) => {
-    if (path.length === n) {
-      results.push(path)
+  const ans = []
+  const _dfs = permutation => {
+    if (permutation.length === nums.length) {
+      ans.push(permutation)
       return
     }
 
-    for (let i = 0; i < n; i++) {
-      if (selectedIdxSet.has(i)) continue
-
-      _dfs([...path, nums[i]], new Set(selectedIdxSet).add(i))
-    }
+    const selectedSet = new Set(permutation)
+    nums
+      .filter(num => !selectedSet.has(num))
+      .forEach(num => {
+        _dfs([...permutation, num])
+      })
   }
 
-  _dfs([], new Set())
-  return results
+  _dfs([])
+  return ans
+
+  // const n = nums.length
+  // if (n === 1) return [[nums[0]]]
+  // const results = []
+  // const _dfs = (path, selectedIdxSet) => {
+  //   if (path.length === n) {
+  //     results.push(path)
+  //     return
+  //   }
+  //   for (let i = 0; i < n; i++) {
+  //     if (selectedIdxSet.has(i)) continue
+  //     _dfs([...path, nums[i]], new Set(selectedIdxSet).add(i))
+  //   }
+  // }
+  // _dfs([], new Set())
+  // return results
 }
 // @lc code=end

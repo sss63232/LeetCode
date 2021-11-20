@@ -57,20 +57,15 @@
  */
 const canJump = function (nums) {
   const canJumpTo = [true]
-
   for (let i = 1; i < nums.length; i++) {
+    canJumpTo[i] = false
     for (let j = 0; j < i; j++) {
-      if (!canJumpTo[j]) continue
-
-      if (nums[j] + j >= i) {
+      if (canJumpTo[j] && nums[j] + j >= i) {
         canJumpTo[i] = true
         break
       }
     }
-
-    canJumpTo[i] = canJumpTo[i] || false
   }
-
   return canJumpTo[nums.length - 1]
 }
 // @lc code=end

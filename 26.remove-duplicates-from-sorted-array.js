@@ -70,15 +70,13 @@
  * 另外一個慢指針負責收集 unique num
  */
 var removeDuplicates = function (nums) {
-  let slowPointer = 0
-  nums.forEach(
-    num => {
-      if (num !== nums[slowPointer]) {
-        slowPointer++
-        nums[slowPointer] = num
-      }
+  let uniNumListTailIdx = 0
+  nums.forEach(num => {
+    if (num !== nums[uniNumListTailIdx]) {
+      uniNumListTailIdx++
+      nums[uniNumListTailIdx] = num
     }
-  )
+  })
 
-  return slowPointer + 1
+  return uniNumListTailIdx + 1
 }

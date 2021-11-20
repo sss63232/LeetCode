@@ -131,24 +131,22 @@ const deserialize = function (data) {
 
   const vals = data.split(',')
 
-  const root = new TreeNode(vals[0])
+  const root = new TreeNode(vals.shift())
   const queue = [root]
-  let cursor = 1
-  while (cursor < vals.length) {
+  while (queue.length) {
     const cur = queue.shift()
 
-    const leftVal = vals[cursor]
+    const leftVal = vals.shift()
 
     if (leftVal !== '#') {
       cur.left = new TreeNode(leftVal)
       queue.push(cur.left)
     }
-    const rightVal = vals[cursor + 1]
+    const rightVal = vals.shift()
     if (rightVal !== '#') {
       cur.right = new TreeNode(rightVal)
       queue.push(cur.right)
     }
-    cursor += 2
   }
 
   return root

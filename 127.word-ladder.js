@@ -73,8 +73,8 @@
  * @return {number}
  */
 const ladderLength = function (beginWord, endWord, wordList) {
-  const wordListSet = new Set(wordList)
-  if (!wordListSet.has(endWord)) return 0
+  const dictSet = new Set(wordList)
+  if (!dictSet.has(endWord)) return 0
 
   const endWordSet = new Set([endWord])
 
@@ -91,9 +91,9 @@ const ladderLength = function (beginWord, endWord, wordList) {
             if (endWordSet.has(newWord)) {
               return level + 1
             }
-            if (wordListSet.has(newWord)) {
+            if (dictSet.has(newWord)) {
               nextLevelWordSet.add(newWord)
-              wordListSet.delete(newWord)
+              dictSet.delete(newWord)
             }
           }
         }

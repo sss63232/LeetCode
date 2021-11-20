@@ -48,24 +48,18 @@
  * @return {number[]}
  */
 const spiralOrder = function (matrix) {
-  const m = matrix.length
-  const n = matrix[0].length
+  const rows = matrix.length
+  const cols = matrix[0].length
 
   const dx = [1, 0, -1, 0]
   const dy = [0, 1, 0, -1]
-  const getNextDirection = dIdx => dIdx < 3 ? dIdx + 1 : 0
+  const getNextDirection = directionIdx =>
+    directionIdx < 3 ? directionIdx + 1 : 0
 
   const visited = new Set()
   const cellKeyOf = (x, y) => `${x}_${y}`
-  const isAvailable = (x, y) => {
-    return (
-      x >= 0 &&
-      x < n &&
-      y >= 0 &&
-      y < m &&
-      !visited.has(cellKeyOf(x, y))
-    )
-  }
+  const isAvailable = (x, y) =>
+    x >= 0 && x < cols && y >= 0 && y < rows && !visited.has(cellKeyOf(x, y))
 
   const path = []
 
@@ -75,10 +69,14 @@ const spiralOrder = function (matrix) {
     path.push(matrix[rowIdx][colIdx])
     visited.add(cellKeyOf(colIdx, rowIdx))
 
-    const nextDirection = getNextDirection(dIdx)
-
-    return _helper(dIdx, rowIdx + dy[dIdx], colIdx + dx[dIdx]) ||
-    _helper(nextDirection, rowIdx + dy[nextDirection], colIdx + dx[nextDirection])
+    if (!_helper(dIdx, rowIdx + dy[dIdx], colIdx + dx[dIdx])) {
+      const nextDirection = getNextDirection(dIdx)
+      _helper(
+        nextDirection,
+        rowIdx + dy[nextDirection],
+        colIdx + dx[nextDirection]
+      )
+    }
   }
 
   _helper(0, 0, 0)

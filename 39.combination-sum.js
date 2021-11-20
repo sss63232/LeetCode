@@ -85,24 +85,37 @@
  */
 const combinationSum = function (candidates, target) {
   candidates.sort((a, b) => a - b)
-  const results = []
 
-  const _dfs = (path, sum, startIdx) => {
+  const _dfs = (selectedNums, sum, startIdx, ans) => {
     if (sum === target) {
-      results.push(path)
-      return
+      ans.push(selectedNums)
+    } else if (sum < target) {
+      for (let i = startIdx; i < candidates.length; i++) {
+        const num = candidates[i]
+        _dfs([...selectedNums, num], sum + num, i, ans)
+      }
     }
 
-    for (let i = startIdx; i < candidates.length; i++) {
-      const num = candidates[i]
-      const curSum = num + sum
-      if (curSum > target) return
-
-      _dfs([...path, num], curSum, i)
-    }
+    return ans
   }
 
-  _dfs([], 0, 0)
-  return results
+  return _dfs([], 0, 0, [])
+
+  // candidates.sort((a, b) => a - b)
+  // const results = []
+  // const _dfs = (path, sum, startIdx) => {
+  //   if (sum === target) {
+  //     results.push(path)
+  //     return
+  //   }
+  //   for (let i = startIdx; i < candidates.length; i++) {
+  //     const num = candidates[i]
+  //     const curSum = num + sum
+  //     if (curSum > target) return
+  //     _dfs([...path, num], curSum, i)
+  //   }
+  // }
+  // _dfs([], 0, 0)
+  // return results
 }
 // @lc code=end

@@ -54,18 +54,29 @@
  * @return {number}
  */
 var uniquePathsWithObstacles = function (obstacleGrid) {
-  for (let i = 0; i < obstacleGrid.length; i++) {
-    for (let j = 0; j < obstacleGrid[0].length; j++) {
-      if (obstacleGrid[i][j] === 1) {
-        obstacleGrid[i][j] = 0
-      } else if (i === 0 && j === 0) {
-        obstacleGrid[i][j] = 1
+  const rows = obstacleGrid.length
+  const cols = obstacleGrid[0].length
+
+  for (let rowIdx = 0; rowIdx < rows; rowIdx++) {
+    for (let colIdx = 0; colIdx < cols; colIdx++) {
+      if (obstacleGrid[rowIdx][colIdx] === 1) {
+        obstacleGrid[rowIdx][colIdx] = 0
+      } else if (rowIdx === 0 && colIdx === 0) {
+        obstacleGrid[rowIdx][colIdx] = 1
       } else {
-        obstacleGrid[i][j] = obstacleGrid[i][j - 1 >= 0 ? j - 1 : 0] + obstacleGrid[i - 1 >= 0 ? i - 1 : 0][j]
+        obstacleGrid[rowIdx][colIdx] =
+          obstacleGrid[rowIdx][colIdx - 1 >= 0 ? colIdx - 1 : 0] +
+          obstacleGrid[rowIdx - 1 >= 0 ? rowIdx - 1 : 0][colIdx]
       }
     }
   }
 
-  return obstacleGrid[obstacleGrid.length - 1][obstacleGrid[0].length - 1]
+  return obstacleGrid[rows - 1][obstacleGrid[0].length - 1]
 }
+
+uniquePathsWithObstacles([
+  [0, 0, 0],
+  [0, 1, 0],
+  [0, 0, 0]
+])
 // @lc code=end
