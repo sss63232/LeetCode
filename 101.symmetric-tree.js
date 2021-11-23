@@ -57,14 +57,49 @@
  * @return {boolean}
  */
 const isSymmetric = function (root) {
-  const check = (left, right) => {
-    if (!left && !right) return true
-    if (!!left !== !!right) return false
-    if (left.val !== right.val) return false
+  //// solution1
+  // const check = (left, right) => {
+  //   if (!left && !right) return true
+  //   if (!!left !== !!right) return false
+  //   if (left.val !== right.val) return false
+  //   return check(left.left, right.right) && check(left.right, right.left)
+  // }
+  // return check(root.left, root.right)
 
-    return check(left.left, right.right) && check(left.right, right.left)
+  // solution2
+  if (!root) return true
+
+  const _isMirror = values => {
+    let left = 0
+    let right = values.length - 1
+
+    while (left <= right) {
+      if (values[left] !== values[right]) return false
+
+      left++
+      right--
+    }
+
+    return true
   }
 
-  return check(root.left, root.right)
+  const stack = [root]
+  while (stack.length) {
+    const lengthOfCurLevel = stack.length
+    const values = []
+    for (let i = 0; i < lengthOfCurLevel; i++) {
+      const cur = stack.shift()
+      if (cur) {
+        values.push(cur.val)
+        stack.push(cur.left, cur.right)
+      } else {
+        values.push(null)
+      }
+    }
+
+    if (!_isMirror(values)) return false
+  }
+
+  return true
 }
 // @lc code=end

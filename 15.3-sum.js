@@ -92,8 +92,7 @@ const threeSum = function (nums) {
     if (num === nums[i - 1]) continue
 
     resultOf3Sum.push(
-      ..._get2sumPairs(nums.slice(i + 1), -num)
-        .map(pair => ([num, ...pair]))
+      ..._get2sumPairs(nums.slice(i + 1), -num).map(pair => [num, ...pair])
     )
   }
 
