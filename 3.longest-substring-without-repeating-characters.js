@@ -56,53 +56,53 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function (s) {
-  if (s === '') {
-    return 0
-  }
+  // if (s === '') {
+  //   return 0
+  // }
 
-  const _hasDuplicationIn = charArr => {
-    const charArrLength = charArr.length
-    if (charArrLength <= 1) {
-      return false
-    }
-
-    const set = new Set(charArr)
-    return set.size < charArrLength
-  }
-
-  const inputCharArr = s.split('')
-  const inputLength = inputCharArr.length
-
-  let frontPivot = 0
-  let endPivot = 0
-
-  let longestLength = 0
-  while (frontPivot < inputLength) {
-    const substringArr = inputCharArr.slice(endPivot, frontPivot + 1)
-    if (_hasDuplicationIn(substringArr)) {
-      endPivot++
-    } else {
-      longestLength = Math.max(substringArr.length, longestLength)
-    }
-
-    frontPivot++
-  }
-
-  return longestLength
-
-  // if (!s) return 0
-
-  // let max = 0
-  // let arr = []
-  // s.split('').forEach(char => {
-  //   const charInArrIdx = arr.indexOf(char)
-  //   if (charInArrIdx >= 0) {
-  //     arr.splice(0, charInArrIdx + 1)
+  // const _hasDuplicationIn = charArr => {
+  //   const charArrLength = charArr.length
+  //   if (charArrLength <= 1) {
+  //     return false
   //   }
-  //   arr.push(char)
-  //   max = Math.max(max, arr.length)
-  // })
 
-  // return max
+  //   const set = new Set(charArr)
+  //   return set.size < charArrLength
+  // }
+
+  // const inputCharArr = s.split('')
+  // const inputLength = inputCharArr.length
+
+  // let right = 0
+  // let left = 0
+
+  // let longestLength = 0
+  // while (right < inputLength) {
+  //   const substringArr = inputCharArr.slice(left, right + 1)
+  //   if (_hasDuplicationIn(substringArr)) {
+  //     left++
+  //   } else {
+  //     longestLength = Math.max(substringArr.length, longestLength)
+  //   }
+
+  //   right++
+  // }
+
+  // return longestLength
+
+  if (!s) return 0
+
+  let max = 0
+  let possibleLongest = []
+  s.split('').forEach(char => {
+    const positionIdx = possibleLongest.indexOf(char)
+    if (positionIdx >= 0) {
+      possibleLongest.splice(0, positionIdx + 1)
+    }
+    possibleLongest.push(char)
+    max = Math.max(max, possibleLongest.length)
+  })
+
+  return max
 }
 // @lc code=end

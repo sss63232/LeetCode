@@ -48,21 +48,38 @@ var merge = function (nums1, m, nums2, n) {
   let nums1EndIdx = m - 1
   let nums2EndIdx = n - 1
 
-  while (nums2EndIdx >= 0) {
-    const val1 = nums1[nums1EndIdx]
-    const val2 = nums2[nums2EndIdx]
+  // while (nums2EndIdx >= 0) {
+  //   const val1 = nums1[nums1EndIdx]
+  //   const val2 = nums2[nums2EndIdx]
 
-    if (nums1EndIdx < 0) {
-      nums1[targetIdx] = val2
+  //   if (nums1EndIdx < 0) {
+  //     nums1[targetIdx] = val2
+  //     nums2EndIdx--
+  //   } else {
+  //     if (val1 > val2) {
+  //       nums1[targetIdx] = val1
+  //       nums1EndIdx--
+  //     } else {
+  //       nums1[targetIdx] = val2
+  //       nums2EndIdx--
+  //     }
+  //   }
+
+  //   targetIdx--
+  // }
+
+  while (targetIdx >= 0) {
+    const value1 = nums1[nums1EndIdx]
+    const value2 = nums2[nums2EndIdx]
+
+    if (value2 === undefined || value1 > value2) {
+      nums1[targetIdx] = value1
+      nums1EndIdx--
+    }
+
+    if (value1 === undefined || value2 >= value1) {
+      nums1[targetIdx] = value2
       nums2EndIdx--
-    } else {
-      if (val1 > val2) {
-        nums1[targetIdx] = val1
-        nums1EndIdx--
-      } else {
-        nums1[targetIdx] = val2
-        nums2EndIdx--
-      }
     }
 
     targetIdx--

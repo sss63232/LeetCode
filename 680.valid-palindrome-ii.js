@@ -59,7 +59,7 @@
 const validPalindrome = function (s) {
   if (s.length <= 2) return true
 
-  const _isPalindrome = (arr) => {
+  const _isPalindrome = arr => {
     if (arr.length === 1) return true
 
     let left = 0
@@ -81,6 +81,9 @@ const validPalindrome = function (s) {
     right--
   }
 
-  return _isPalindrome(s.slice(left, right)) || _isPalindrome(s.slice(left + 1, right + 1))
+  return (
+    _isPalindrome(s.slice(left, right)) ||
+    _isPalindrome(s.slice(left + 1, right + 1))
+  )
 }
 // @lc code=end

@@ -83,11 +83,13 @@ var reverseKGroup = function (head, k) {
   /**
    * method 2
    */
-  const _getEndNode = (head, k) => {
+  const _getGroupEndNode = (head, k) => {
     let cur = head
     let pre = null
     for (let i = 0; i < k; i++) {
-      if (cur === null) { return null }
+      if (cur === null) {
+        return null
+      }
       pre = cur
       cur = cur.next
     }
@@ -95,13 +97,15 @@ var reverseKGroup = function (head, k) {
   }
 
   const _reverseAdjacent = (pre, cur) => {
-    if (cur === null) { return pre }
+    if (cur === null) {
+      return pre
+    }
     const next = cur.next
     cur.next = pre
     return _reverseAdjacent(cur, next)
   }
 
-  const endNode = _getEndNode(head, k)
+  const endNode = _getGroupEndNode(head, k)
 
   if (endNode) {
     const nextHead = endNode.next

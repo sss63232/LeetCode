@@ -64,9 +64,7 @@ const search = function (nums, target) {
     let right = nums.length - 1
     while (left + 1 < right) {
       const mid = left + Math.floor((right - left) / 2)
-      numbers[mid] > numbers[right]
-        ? left = mid + 1
-        : right = mid
+      numbers[mid] > numbers[right] ? (left = mid + 1) : (right = mid)
     }
 
     return numbers[left] > numbers[right] ? right : left
@@ -82,9 +80,7 @@ const search = function (nums, target) {
 
       if (midNum === target) return midIdx
 
-      target > midNum
-        ? left = midIdx + 1
-        : right = midIdx - 1
+      target > midNum ? (left = midIdx + 1) : (right = midIdx - 1)
     }
 
     if (sorted[left] === target) return left
@@ -99,8 +95,6 @@ const search = function (nums, target) {
   }
 
   const targetIdx = _binarySearch(nums.slice(minNumIdx))
-  return targetIdx === -1
-    ? -1
-    : minNumIdx + targetIdx
+  return targetIdx === -1 ? -1 : minNumIdx + targetIdx
 }
 // @lc code=end

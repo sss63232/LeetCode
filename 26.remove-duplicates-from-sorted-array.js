@@ -70,13 +70,23 @@
  * 另外一個慢指針負責收集 unique num
  */
 var removeDuplicates = function (nums) {
-  let uniNumListTailIdx = 0
-  nums.forEach(num => {
-    if (num !== nums[uniNumListTailIdx]) {
-      uniNumListTailIdx++
-      nums[uniNumListTailIdx] = num
-    }
-  })
+  // let uniNumListTailIdx = 0
+  // nums.forEach(num => {
+  //   if (num !== nums[uniNumListTailIdx]) {
+  //     uniNumListTailIdx++
+  //     nums[uniNumListTailIdx] = num
+  //   }
+  // })
+  // return uniNumListTailIdx + 1
 
-  return uniNumListTailIdx + 1
+  if (nums.length === 1) return 1
+  let tailIdx = 1
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] !== nums[tailIdx - 1]) {
+      nums[tailIdx] = nums[i]
+      tailIdx++
+    }
+  }
+
+  return tailIdx
 }

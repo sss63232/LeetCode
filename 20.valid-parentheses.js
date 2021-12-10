@@ -25,7 +25,10 @@ var isValid = function (s) {
     const char = s[i]
     if (leftBrackets.indexOf(char) >= 0) {
       foundLeftBrackets.push(char)
-    } else if (rightBrackets.indexOf(char) >= 0) {
+      continue
+    }
+
+    if (rightBrackets.indexOf(char) >= 0) {
       if (!_isMatched(foundLeftBrackets.pop(), char)) {
         return false
       }

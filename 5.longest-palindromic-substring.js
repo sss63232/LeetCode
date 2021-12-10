@@ -64,11 +64,7 @@
  */
 const longestPalindrome = function (s) {
   const _centerExpand = (left, right) => {
-    while (
-      left >= 0 &&
-      right <= s.length - 1 &&
-      s[left] === s[right]
-    ) {
+    while (left >= 0 && right <= s.length - 1 && s[left] === s[right]) {
       left--
       right++
     }
@@ -78,19 +74,18 @@ const longestPalindrome = function (s) {
   const _getLongestFromMid = idx => {
     const possible1 = _centerExpand(idx, idx)
     const possible2 = _centerExpand(idx, idx + 1)
-    return possible1.length > possible2.length
-      ? possible1
-      : possible2
+    return possible1.length > possible2.length ? possible1 : possible2
   }
 
-  let longestSoFar = s[0]
+  let longestStringSoFar = s[0]
   for (let i = 0; i < s.length; i++) {
     const curLongest = _getLongestFromMid(i)
-    longestSoFar = curLongest.length > longestSoFar.length
-      ? curLongest
-      : longestSoFar
+    longestStringSoFar =
+      curLongest.length > longestStringSoFar.length
+        ? curLongest
+        : longestStringSoFar
   }
 
-  return longestSoFar
+  return longestStringSoFar
 }
 // @lc code=end

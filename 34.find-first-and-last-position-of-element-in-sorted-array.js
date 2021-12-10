@@ -94,8 +94,6 @@ const searchRange = function (nums, target) {
   }
 
   const firstTargetIdx = _findFirstTarget()
-  return firstTargetIdx === -1
-    ? [-1, -1]
-    : [firstTargetIdx, _findLastTarget()]
+  return firstTargetIdx === -1 ? [-1, -1] : [firstTargetIdx, _findLastTarget()]
 }
 // @lc code=end

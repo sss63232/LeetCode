@@ -106,15 +106,23 @@ const fourSum = function (nums, target) {
       const num = sortedNumbers[i]
       if (i !== 0 && num === sortedNumbers[i - 1]) continue
 
-      const subResults = _nSum(n - 1, sortedNumbers.slice(i + 1), sumTarget - num)
+      const subResults = _nSum(
+        n - 1,
+        sortedNumbers.slice(i + 1),
+        sumTarget - num
+      )
       if (subResults.length) {
-        results.push(...subResults.map(subResult => ([num, ...subResult])))
+        results.push(...subResults.map(subResult => [num, ...subResult]))
       }
     }
     return results
   }
 
-  return _nSum(4, nums.sort((a, b) => a - b), target)
+  return _nSum(
+    4,
+    nums.sort((a, b) => a - b),
+    target
+  )
 
   // const results = []
   // for (let i = 0; i < nums.length; i++) {

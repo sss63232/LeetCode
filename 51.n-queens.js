@@ -55,46 +55,44 @@
  * @return {string[][]}
  */
 const solveNQueens = function (n) {
-  const results = []
+  // [0, 1, 2]
 
-  const slash1 = new Set()
-  const slash2 = new Set()
+  const possibles = []
 
-  const _helper = (rowIdx, queenIdxList) => {
-    if (rowIdx === n) {
-      results.push([...queenIdxList])
-      return
+  const _helper = (queenIdxList, slashSet1, slashSet2) => {
+    if (queenIdxList.length === n) {
+      possibles.push(queenIdxList)
     }
 
-    for (let columnIdx = 0; columnIdx < n; columnIdx++) {
-      if (
-        queenIdxList.indexOf(columnIdx) >= 0 ||
-        slash1.has(rowIdx + columnIdx) ||
-        slash2.has(rowIdx - columnIdx)
-      )
-        continue
-
-      queenIdxList.push(columnIdx)
-      slash1.add(rowIdx + columnIdx)
-      slash2.add(rowIdx - columnIdx)
-
-      _helper(rowIdx + 1, queenIdxList)
-
-      queenIdxList.pop()
-      slash1.delete(rowIdx + columnIdx)
-      slash2.delete(rowIdx - columnIdx)
+    for (let i = 0; i < n; i++) {
+      if (!queenIdxList.includes(i)) {
+        const colIdx = i
+        const rowIdx = queenIdxList.length
+        if (
+          !slashSet1.has(rowIdx + colIdx) &&
+          !slashSet2.has(rowIdx - colIdx)
+        ) {
+          _helper(
+            [...queenIdxList, i],
+            new Set(slashSet1).add(rowIdx + colIdx),
+            new Set(slashSet2).add(rowIdx - colIdx)
+          )
+        }
+      }
     }
   }
 
-  _helper(0, [])
+  _helper([], new Set(), new Set())
 
-  return results.map(result =>
-    result.map(queenColIdx => {
-      const curRow = new Array(n).fill('.')
-      curRow[queenColIdx] = 'Q'
-      return curRow.join('')
+  // [[0, 1, 2],[3,2,0]]
+  return possibles.map(possible => {
+    // [0, 1, 2]
+    return possible.map(queenColIdx => {
+      const row = new Array(n).fill('.')
+      row[queenColIdx] = 'Q'
+      return row.join('')
     })
-  )
+  })
 }
 
 // solveNQueens(4)
