@@ -1,6 +1,6 @@
 const handMadePromiseAll = promiseList => {
   return new Promise((resolve, reject) => {
-    if (!Array.isArray(promises)) {
+    if (!Array.isArray(promiseList)) {
       throw new TypeError('promises must be an array')
     }
 
