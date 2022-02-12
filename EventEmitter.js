@@ -1,13 +1,13 @@
 class EventEmitter {
   constructor () {
-    this._listeners = {}
+    this._listenersMap = {}
   }
 
   on (eventName, callback) {
-    if (this._listeners[eventName]) {
-      this._listeners[eventName].push(callback)
+    if (this._listenersMap[eventName]) {
+      this._listenersMap[eventName].push(callback)
     } else {
-      this._listeners[eventName] = [callback]
+      this._listenersMap[eventName] = [callback]
     }
   }
 
@@ -21,19 +21,19 @@ class EventEmitter {
   }
 
   emit (eventName, event) {
-    if (!this._listeners[eventName]) {
+    if (!this._listenersMap[eventName]) {
       throw new Error(`${eventName} does not exit`)
     }
 
-    this._listeners[eventName].forEach(cb => cb(event))
+    this._listenersMap[eventName].forEach(cb => cb(event))
   }
 
   off (eventName, callback) {
-    if (!this._listeners[eventName]) {
+    if (!this._listenersMap[eventName]) {
       throw new Error(`${eventName} does not exit`)
     }
 
-    this._listeners[eventName] = this._listeners[eventName].filter(
+    this._listenersMap[eventName] = this._listenersMap[eventName].filter(
       cb => cb !== callback
     )
   }
