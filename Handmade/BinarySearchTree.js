@@ -123,6 +123,39 @@ class BinarySearchTree {
       return this.hasNode(rootNode.left, key)
     }
   }
+
+  remove(key) {
+    return this.removeNode(this.root, key)
+  }
+
+  removeNode(node, key) {
+    if (!node) {
+      return null
+    }
+
+    if (node.key === key) {
+      if (node.left === null && node.right === null) {
+        node = null
+      } else if (node.left === null) {
+        node = node.right
+      } else if (node.right === null) {
+        node = node.left
+      } else {
+        const minRightKey = this.findMinFrom(node.right)
+        node.key = minRightKey
+        node.right = this.removeNode(node.right, minRightKey)
+      }
+      return node
+    }
+
+    if (key > node.key) {
+      node.right = this.removeNode(node.right, key)
+    } else {
+      node.left = this.removeNode(node.left, key)
+    }
+
+    return node
+  }
 }
 
 const tree = new BinarySearchTree()
@@ -133,7 +166,10 @@ tree.insert(1)
 tree.insert(0)
 tree.insert(9)
 tree.insert(7)
+
 console.log("TCL=> ~ tree.min()", tree.min())
 console.log("TCL=> ~ tree.max()", tree.max())
 console.log("TCL=> ~ tree.has(100)", tree.has(100))
+console.log("TCL=> ~ tree.has(9)", tree.has(9))
+tree.remove(9)
 console.log("TCL=> ~ tree.has(9)", tree.has(9))
