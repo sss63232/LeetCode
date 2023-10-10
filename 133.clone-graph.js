@@ -113,34 +113,63 @@
 const cloneGraph = function (node) {
   if (!node) return node
 
-  const visitedNodeVals = new Set()
-  const cloneNodesMap = new Map()
+  const cloneNodeList = []
+  const processedSet = new Set()
+  const processingQueue = []
 
-  const queue = [node]
-  visitedNodeVals.add(node.val)
-  while (queue.length) {
-    const cur = queue.shift()
+  processingQueue.push(node)
+  processedSet.add(node.val)
+  while (processingQueue.length) {
+    // clone current node
+    const cur = processingQueue.shift()
+    const clone = cloneNodeList[cur.val] || new Node(cur.val)
+    cloneNodeList[cur.val] = clone
+    // build the relationship
+    cur.neighbors.forEach(neighbor => {
+      const cloneNeighbor = cloneNodeList[neighbor.val] || new Node(neighbor.val)
+      cloneNodeList[neighbor.val] = cloneNeighbor
 
-    if (!cloneNodesMap.has(cur.val)) {
-      cloneNodesMap.set(cur.val, new Node(cur.val))
-    }
+      clone.neighbors.push(cloneNeighbor)
 
-    const clone = cloneNodesMap.get(cur.val)
-
-    cur.neighbors.forEach(n => {
-      if (!cloneNodesMap.has(n.val)) {
-        cloneNodesMap.set(n.val, new Node(n.val))
-      }
-      const nClone = cloneNodesMap.get(n.val)
-      clone.neighbors.push(nClone)
-
-      if (!visitedNodeVals.has(n.val)) {
-        queue.push(n)
-        visitedNodeVals.add(n.val)
+      if (!processedSet.has(neighbor.val)) {
+        processingQueue.push(neighbor)
+        processedSet.add(neighbor.val)
       }
     })
   }
 
-  return cloneNodesMap.get(node.val)
+  return cloneNodeList[node.val]
+
+  // if (!node) return node
+
+  // const visitedNodeVals = new Set()
+  // const cloneNodesMap = new Map()
+
+  // const queue = [node]
+  // visitedNodeVals.add(node.val)
+  // while (queue.length) {
+  //   const cur = queue.shift()
+
+  //   if (!cloneNodesMap.has(cur.val)) {
+  //     cloneNodesMap.set(cur.val, new Node(cur.val))
+  //   }
+
+  //   const clone = cloneNodesMap.get(cur.val)
+
+  //   cur.neighbors.forEach(n => {
+  //     if (!cloneNodesMap.has(n.val)) {
+  //       cloneNodesMap.set(n.val, new Node(n.val))
+  //     }
+  //     const nClone = cloneNodesMap.get(n.val)
+  //     clone.neighbors.push(nClone)
+
+  //     if (!visitedNodeVals.has(n.val)) {
+  //       queue.push(n)
+  //       visitedNodeVals.add(n.val)
+  //     }
+  //   })
+  // }
+
+  // return cloneNodesMap.get(node.val)
 }
 // @lc code=end

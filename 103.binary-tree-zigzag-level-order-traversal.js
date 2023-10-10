@@ -63,43 +63,69 @@
  * @return {number[][]}
  */
 const zigzagLevelOrder = function (root) {
-  if (!root) {
-    return []
-  }
 
-  const appendLevelNode = level => node => ({ node, level })
-  const isFromLeftToRight = level => level % 2 === 0
+  if (!root) return []
 
   const result = []
-  const queue = [appendLevelNode(0)(root)]
+  const queue = [root]
+  let fromLeft = true
   while (queue.length) {
-    const levelNode = queue.shift()
-    const {
-      level,
-      node
-    } = levelNode
-    if (node) {
-      const {
-        val,
-        left,
-        right
-      } = node
-
-      if (result[level]) {
-        if (isFromLeftToRight(level)) {
-          result[level].push(val)
-        } else {
-          result[level].unshift(val)
-        }
-      } else {
-        result[level] = [val]
-      }
-
-      const toNextLevel = appendLevelNode(level + 1)
-      queue.push(toNextLevel(left), toNextLevel(right))
+    let levelLength = queue.length
+    const levelVals = []
+    while (levelLength--) {
+      const cur = queue.shift()
+      levelVals.push(cur.val)
+      cur.left && queue.push(cur.left)
+      cur.right && queue.push(cur.right)
     }
+    if (!fromLeft) {
+      levelVals.reverse()
+    }
+    result.push(levelVals)
+
+    fromLeft = !fromLeft
   }
 
   return result
+
+
+  // if (!root) {
+  //   return []
+  // }
+
+  // const appendLevelNode = level => node => ({ node, level })
+  // const isFromLeftToRight = level => level % 2 === 0
+
+  // const result = []
+  // const queue = [appendLevelNode(0)(root)]
+  // while (queue.length) {
+  //   const levelNode = queue.shift()
+  //   const {
+  //     level,
+  //     node
+  //   } = levelNode
+  //   if (node) {
+  //     const {
+  //       val,
+  //       left,
+  //       right
+  //     } = node
+
+  //     if (result[level]) {
+  //       if (isFromLeftToRight(level)) {
+  //         result[level].push(val)
+  //       } else {
+  //         result[level].unshift(val)
+  //       }
+  //     } else {
+  //       result[level] = [val]
+  //     }
+
+  //     const toNextLevel = appendLevelNode(level + 1)
+  //     queue.push(toNextLevel(left), toNextLevel(right))
+  //   }
+  // }
+
+  // return result
 }
 // @lc code=end
