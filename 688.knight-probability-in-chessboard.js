@@ -69,35 +69,65 @@
  * @param {number} c
  * @return {number}
  */
-const knightProbability = function (N, K, r, c) {
-  const dx = [1, 1, 2, 2, -1, -1, -2, -2]
-  const dy = [2, -2, 1, -1, 2, -2, 1, -1]
+var knightProbability = function (n, k, row, column) {
+  const dx = [1, 1, -1, -1, 2, 2, -2, -2]
+  const dy = [2, -2, 2, -2, 1, -1, 1, -1]
 
-  const cacheMap = new Map()
+  let remainingMoves = k
+  const queue = [{ rowIdx: row, colIdx: column }]
+  while (queue.length && remainingMoves) {
+    let moveItems = queue.length
+    while (moveItems--) {
+      const cur = queue.shift()
+      for (let i = 0; i < 8; i++) {
+        const nextRowIdx = cur.rowIdx + dx[i]
+        if (nextRowIdx < 0 || nextRowIdx >= n) {
+          continue
+        }
+        const nextColIdx = cur.colIdx + dy[i]
+        if (nextColIdx < 0 || nextColIdx >= n) {
+          continue
+        }
+        queue.push({ rowIdx: nextRowIdx, colIdx: nextColIdx })
+      }
 
-  const _inbound = (rowIdx, colIdx) =>
-    rowIdx >= 0 && colIdx >= 0 && rowIdx < N && colIdx < N
-
-  const _getValidTimes = (remainingSteps, rowIdx, colIdx) => {
-    if (!_inbound(rowIdx, colIdx)) return 0
-    if (remainingSteps === 0) return 1
-
-    const key = `${remainingSteps}_${rowIdx}_${colIdx}`
-    if (cacheMap.has(key)) return cacheMap.get(key)
-
-    let curTimes = 0
-    for (let i = 0; i < 8; i++) {
-      curTimes += _getValidTimes(
-        remainingSteps - 1,
-        rowIdx + dx[i],
-        colIdx + dy[i]
-      )
     }
 
-    cacheMap.set(key, curTimes)
-    return curTimes
+    remainingMoves--
   }
 
-  return _getValidTimes(K, r, c) / Math.pow(8, K)
-}
+  return queue.length / Math.pow(8, k)
+};
+
+// const knightProbability = function (N, K, r, c) {
+//   const dx = [1, 1, 2, 2, -1, -1, -2, -2]
+//   const dy = [2, -2, 1, -1, 2, -2, 1, -1]
+
+//   const cacheMap = new Map()
+
+//   const _inbound = (rowIdx, colIdx) =>
+//     rowIdx >= 0 && colIdx >= 0 && rowIdx < N && colIdx < N
+
+//   const _getValidTimes = (remainingSteps, rowIdx, colIdx) => {
+//     if (!_inbound(rowIdx, colIdx)) return 0
+//     if (remainingSteps === 0) return 1
+
+//     const key = `${remainingSteps}_${rowIdx}_${colIdx}`
+//     if (cacheMap.has(key)) return cacheMap.get(key)
+
+//     let curTimes = 0
+//     for (let i = 0; i < 8; i++) {
+//       curTimes += _getValidTimes(
+//         remainingSteps - 1,
+//         rowIdx + dx[i],
+//         colIdx + dy[i]
+//       )
+//     }
+
+//     cacheMap.set(key, curTimes)
+//     return curTimes
+//   }
+
+//   return _getValidTimes(K, r, c) / Math.pow(8, K)
+// }
 // @lc code=end

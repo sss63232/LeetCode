@@ -67,23 +67,55 @@ const search = function (nums, target) {
   // if (nums[right] === target) return right
   // return -1
 
-  if (nums.length === 0) return -1
+  // ============
 
-  let left = 0
-  let right = nums.length - 1
-  while (left + 1 < right) {
-    const midIdx = left + Math.floor((right - left) / 2)
-    const midNum = nums[midIdx]
-    if (midNum === target) return midIdx
-    if (target > midNum) {
-      left = midIdx + 1
+  // if (nums.length === 0) return -1
+
+  // let left = 0
+  // let right = nums.length - 1
+  // while (left + 1 < right) {
+  //   const midIdx = left + Math.floor((right - left) / 2)
+  //   const midNum = nums[midIdx]
+  //   if (midNum === target) return midIdx
+  //   if (target > midNum) {
+  //     left = midIdx + 1
+  //   } else {
+  //     right = midIdx - 1
+  //   }
+  // }
+
+  // if (nums[left] === target) return left
+  // if (nums[right] === target) return right
+  // return -1
+
+  // ============
+
+  if (!nums || !nums.length) {
+    return -1
+  }
+
+  let startIdx = 0
+  let endIdx = nums.length - 1
+  while (startIdx + 1 < endIdx) {
+    const mid = startIdx + Math.floor((endIdx - startIdx) / 2)
+    if (nums[mid] === target) {
+      endIdx = mid
+    } else if (nums[mid] < target) {
+      startIdx = mid + 1
     } else {
-      right = midIdx - 1
+      endIdx = mid - 1
     }
   }
 
-  if (nums[left] === target) return left
-  if (nums[right] === target) return right
+  if (nums[startIdx] === target) {
+    return startIdx
+  }
+
+  if (nums[endIdx] === target) {
+    return endIdx
+  }
+
   return -1
+
 }
 // @lc code=end

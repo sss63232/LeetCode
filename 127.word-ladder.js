@@ -73,42 +73,80 @@
  * @return {number}
  */
 const ladderLength = function (beginWord, endWord, wordList) {
-  const dictSet = new Set(wordList)
-  if (!dictSet.has(endWord)) return 0
-
-  const endWordSet = new Set([endWord])
-
-  let curLevelWordSet = new Set([beginWord])
-  let level = 1
-  while (curLevelWordSet.size) {
-    const nextLevelWordSet = new Set()
-    for (const word of curLevelWordSet) {
-      for (let i = 0; i < word.length; i++) {
-        for (let j = 0; j < 26; j++) {
-          const newChar = String.fromCharCode(97 + j)
-          if (newChar !== word[i]) {
-            const newWord = word.slice(0, i) + newChar + word.slice(i + 1)
-            if (endWordSet.has(newWord)) {
-              return level + 1
-            }
-            if (dictSet.has(newWord)) {
-              nextLevelWordSet.add(newWord)
-              dictSet.delete(newWord)
-            }
-          }
+  const hasDifferedBySingleLetter = (word1, word2) => {
+    let difference = 0
+    for (let i = 0; i < word1.length; i++) {
+      if (word1[i] !== word2[i]) {
+        difference++
+        if (difference > 1) {
+          return false
         }
       }
     }
 
-    level++
-    curLevelWordSet = nextLevelWordSet
-    // if (nextLevelWordSet.size > endWordSet) {
-    //   [nextLevelWordSet, endWordSet] =
-    //     [endWordSet, nextLevelWordSet]
-    // }
+    return difference === 1
   }
 
+  const enqueuedSet = new Set()
+  const queue = []
+
+  let transformationTimes = 0
+  queue.push(beginWord)
+  while (queue.length) {
+    let levelLength = queue.length
+    transformationTimes++
+    while (levelLength--) {
+      const cur = queue.shift()
+      if (cur === endWord) {
+        return transformationTimes
+      }
+      wordList.forEach(word => {
+        if (!enqueuedSet.has(word) && hasDifferedBySingleLetter(cur, word)) {
+          queue.push(word)
+          enqueuedSet.add(word)
+        }
+      })
+    }
+  }
   return 0
+
+
+  // const dictSet = new Set(wordList)
+  // if (!dictSet.has(endWord)) return 0
+
+  // const endWordSet = new Set([endWord])
+
+  // let curLevelWordSet = new Set([beginWord])
+  // let level = 1
+  // while (curLevelWordSet.size) {
+  //   const nextLevelWordSet = new Set()
+  //   for (const word of curLevelWordSet) {
+  //     for (let i = 0; i < word.length; i++) {
+  //       for (let j = 0; j < 26; j++) {
+  //         const newChar = String.fromCharCode(97 + j)
+  //         if (newChar !== word[i]) {
+  //           const newWord = word.slice(0, i) + newChar + word.slice(i + 1)
+  //           if (endWordSet.has(newWord)) {
+  //             return level + 1
+  //           }
+  //           if (dictSet.has(newWord)) {
+  //             nextLevelWordSet.add(newWord)
+  //             dictSet.delete(newWord)
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   level++
+  //   curLevelWordSet = nextLevelWordSet
+  //   // if (nextLevelWordSet.size > endWordSet) {
+  //   //   [nextLevelWordSet, endWordSet] =
+  //   //     [endWordSet, nextLevelWordSet]
+  //   // }
+  // }
+
+  // return 0
 }
 
 // @lc code=end

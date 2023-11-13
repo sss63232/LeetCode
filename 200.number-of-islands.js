@@ -62,6 +62,64 @@
  * @param {character[][]} grid
  * @return {number}
  */
+// var numIslands = function (grid) {
+//   const rowVariation = [0, 0, 1, -1]
+//   const colVariation = [1, -1, 0, 0]
+//   const rowLength = grid.length
+//   const colLength = grid[0].length
+
+//   const exploredCellSet = new Set()
+//   const exploreIslandFrom = (centerRowIdx, centerColIdx) => {
+//     const queue = []
+
+//     queue.push({ neighborRow: centerRowIdx, neighborCol: centerColIdx })
+//     exploredCellSet.add(`${centerRowIdx}_${centerColIdx}`)
+//     while (queue.length) {
+//       const pixel = queue.shift()
+//       for (let i = 0; i < 4; i++) {
+//         const neighborRow = pixel.neighborRow + rowVariation[i]
+//         if (neighborRow < 0 || neighborRow >= rowLength) {
+//           continue
+//         }
+//         const neighborCol = pixel.neighborCol + colVariation[i]
+//         if (neighborCol < 0 || neighborCol >= colLength) {
+//           continue
+//         }
+
+//         const position = `${neighborRow}_${neighborCol}`
+//         if (exploredCellSet.has(position)) {
+//           continue
+//         }
+//         exploredCellSet.add(position)
+
+//         if (grid[neighborRow][neighborCol] === "1") {
+//           queue.push({ neighborRow, neighborCol })
+//         }
+//       }
+//     }
+//   }
+
+//   let numberOfIslands = 0
+//   for (let rowIdx = 0; rowIdx < rowLength; rowIdx++) {
+//     for (let colIdx = 0; colIdx < colLength; colIdx++) {
+//       if (exploredCellSet.has(`${rowIdx}_${colIdx}`)) {
+//         continue
+//       }
+
+//       const cell = grid[rowIdx][colIdx]
+
+//       if (cell === '0') {
+//         continue
+//       }
+//       numberOfIslands++
+//       exploreIslandFrom(rowIdx, colIdx)
+//     }
+//   }
+
+//   return numberOfIslands
+// };
+
+
 const numIslands = function (grid) {
   const cols = grid[0].length
   if (cols <= 0) {
