@@ -6,16 +6,16 @@
  * https://leetcode.com/problems/partition-equal-subset-sum/description/
  *
  * algorithms
- * Medium (44.86%)
- * Likes:    4523
- * Dislikes: 94
- * Total Accepted:    291.4K
- * Total Submissions: 645.4K
+ * Medium (46.42%)
+ * Likes:    12352
+ * Dislikes: 253
+ * Total Accepted:    910.9K
+ * Total Submissions: 2M
  * Testcase Example:  '[1,5,11,5]'
  *
- * Given a non-empty array nums containing only positive integers, find if the
- * array can be partitioned into two subsets such that the sum of elements in
- * both subsets is equal.
+ * Given an integer array nums, return true if you can partition the array into
+ * two subsets such that the sum of the elements in both subsets is equal or
+ * false otherwise.
  *
  *
  * Example 1:
@@ -49,40 +49,19 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-const canPartition = function (nums) {
+var canPartition = function (nums) {
   const sum = nums.reduce((acc, cur) => acc + cur)
-  if (sum % 2 !== 0) return false
-  const sumOfSubset = sum / 2
-  nums.sort((a, b) => b - a)
-  if (nums[0] > sumOfSubset) return false
-
-  const pools = new Array(2).fill(0)
-  const memo = new Map()
-  const _check = (numIdx) => {
-    if (numIdx === nums.length) return true
-
-    const key = `${numIdx}_${pools.join('_')}`
-    if (memo.has(key)) return memo.get(key)
-
-    const curNum = nums[numIdx]
-    for (let i = 0; i < pools.length; i++) {
-      if (
-        pools[i] === sumOfSubset ||
-        pools[i] + curNum > sumOfSubset
-      ) continue
-
-      pools[i] += curNum
-      if (_check(numIdx + 1)) {
-        memo.set(key, true)
-        return true
-      }
-      pools[i] -= curNum
+  if (sum % 2 === 1) return false
+  const target = sum / 2
+  const dp = new Array(target + 1).fill(0)
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i]
+    for (let j = target; j >= num; j--) {
+      dp[j] = Math.max(dp[j], dp[j - num] + num)
+      if (dp[j] === target) return true
     }
-
-    memo.set(key, false)
-    return false
   }
 
-  return _check(0)
+  return dp[target] === target
 }
 // @lc code=end

@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/3sum/description/
  *
  * algorithms
- * Medium (28.73%)
- * Likes:    11960
- * Dislikes: 1170
- * Total Accepted:    1.4M
- * Total Submissions: 4.8M
+ * Medium (34.76%)
+ * Likes:    30987
+ * Dislikes: 2884
+ * Total Accepted:    3.8M
+ * Total Submissions: 10.7M
  * Testcase Example:  '[-1,0,1,2,-1,-4]'
  *
  * Given an integer array nums, return all the triplets [nums[i], nums[j],
@@ -21,20 +21,40 @@
  *
  *
  * Example 1:
+ *
+ *
  * Input: nums = [-1,0,1,2,-1,-4]
  * Output: [[-1,-1,2],[-1,0,1]]
+ * Explanation:
+ * nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+ * nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+ * nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+ * The distinct triplets are [-1,0,1] and [-1,-1,2].
+ * Notice that the order of the output and the order of the triplets does not
+ * matter.
+ *
+ *
  * Example 2:
- * Input: nums = []
+ *
+ *
+ * Input: nums = [0,1,1]
  * Output: []
+ * Explanation: The only possible triplet does not sum up to 0.
+ *
+ *
  * Example 3:
- * Input: nums = [0]
- * Output: []
+ *
+ *
+ * Input: nums = [0,0,0]
+ * Output: [[0,0,0]]
+ * Explanation: The only possible triplet sums up to 0.
+ *
  *
  *
  * Constraints:
  *
  *
- * 0 <= nums.length <= 3000
+ * 3 <= nums.length <= 3000
  * -10^5 <= nums[i] <= 10^5
  *
  *
@@ -44,58 +64,75 @@
 /**
  * @param {number[]} nums
  * @return {number[][]}
- *
- * 2 pointers
  */
-const threeSum = function (nums) {
-  if (nums.length < 3) return []
+var threeSum = function (nums) {
+  //   const _getTwoSumFromSorted = (sortedNumberList, sumTarget) => {
+  //     const twoSumOptions = []
+  //     let leftIdx = 0
+  //     let rightIdx = sortedNumberList.length - 1
+  //     while (leftIdx < rightIdx) {
+  //       const leftVal = sortedNumberList[leftIdx]
+  //       const rightVal = sortedNumberList[rightIdx]
+  //       const sum = leftVal + rightVal
+  //       if (sum > sumTarget) {
+  //         rightIdx--
+  //       } else if (sum < sumTarget) {
+  //         leftIdx++
+  //       } else {
+  //         twoSumOptions.push([leftVal, rightVal])
+  //         rightIdx--
+  //         leftIdx++
+  //       }
+  //     }
+  //     return twoSumOptions
+  //   }
+  //   nums.sort((a, b) => a - b)
+  //   const outputSet = new Set()
+  //   const output = []
+  //   nums.forEach((num, idx) => {
+  //     const pairedTarget = 0 - num
+  //     const twoSumList = _getTwoSumFromSorted(nums.slice(idx + 1), pairedTarget)
+  //     twoSumList.forEach((twoSumNumbers) => {
+  //       const key = twoSumNumbers.join("_")
+  //       if (!outputSet.has(key)) {
+  //         output.push([num, ...twoSumNumbers])
+  //         outputSet.add(key)
+  //       }
+  //     })
+  //   })
+  //   return output
+  // ==================
+  // // Answer 2
+  if (!nums || nums.length < 3) {
+    return
+  }
 
   nums.sort((a, b) => a - b)
+  const output = []
+  const outputSet = new Set()
 
-  const _get2sumPairs = (numbers, target) => {
-    const pairs = []
-
-    let left = 0
-    let right = numbers.length - 1
-    while (left < right) {
-      const leftNum = numbers[left]
-      if (leftNum === numbers[left - 1]) {
-        left++
-        continue
-      }
-
-      const rightNum = numbers[right]
-      if (rightNum === numbers[right + 1]) {
-        right--
-        continue
-      }
-
-      const sum = leftNum + rightNum
-      if (sum === target) {
-        pairs.push([leftNum, rightNum])
-        left++
-        right--
-      } else if (sum > target) {
-        right--
+  // i, j, k
+  for (let i = 0; i < nums.length - 2; i++) {
+    let j = i + 1
+    let k = nums.length - 1
+    while (j < k) {
+      const sum = nums[i] + nums[j] + nums[k]
+      if (sum === 0) {
+        const sumKey = [i, j, k].map((idx) => nums[idx]).join("_")
+        if (!outputSet.has(sumKey)) {
+          output.push([nums[i], nums[j], nums[k]])
+          outputSet.add(sumKey)
+        }
+        j++
+        k--
+      } else if (sum > 0) {
+        k--
       } else {
-        left++
+        j++
       }
     }
-
-    return pairs
   }
 
-  const resultOf3Sum = []
-  for (let i = 0; i < nums.length - 2; i++) {
-    const num = nums[i]
-    if (num > 0) break
-    if (num === nums[i - 1]) continue
-
-    resultOf3Sum.push(
-      ..._get2sumPairs(nums.slice(i + 1), -num).map(pair => [num, ...pair])
-    )
-  }
-
-  return resultOf3Sum
+  return output
 }
 // @lc code=end

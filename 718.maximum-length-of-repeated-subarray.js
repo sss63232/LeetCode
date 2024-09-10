@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/maximum-length-of-repeated-subarray/description/
  *
  * algorithms
- * Medium (50.90%)
- * Likes:    2235
- * Dislikes: 56
- * Total Accepted:    100K
- * Total Submissions: 196.3K
+ * Medium (50.95%)
+ * Likes:    6818
+ * Dislikes: 170
+ * Total Accepted:    311.6K
+ * Total Submissions: 611.6K
  * Testcase Example:  '[1,2,3,2,1]\n[3,2,1,4,7]'
  *
  * Given two integer arrays nums1 and nums2, return the maximum length of a
@@ -30,6 +30,7 @@
  *
  * Input: nums1 = [0,0,0,0,0], nums2 = [0,0,0,0,0]
  * Output: 5
+ * Explanation: The repeated subarray with maximum length is [0,0,0,0,0].
  *
  *
  *
@@ -44,40 +45,30 @@
 
 // @lc code=start
 /**
- * 動態規劃
  * @param {number[]} nums1
  * @param {number[]} nums2
  * @return {number}
  */
-const findLength = function (nums1, nums2) {
-  const dp = new Array(nums1.length).fill(0).map(() => new Array(nums2.length).fill(0))
+var findLength = function (nums1, nums2) {
+  const dp = Array(nums1.length + 1)
+    .fill([])
+    .map(() => Array(nums2.length + 1).fill(0))
 
-  const firstNum1 = nums1[0]
-  dp[0] = dp[0].map((_, idx) => nums2[idx] === firstNum1 ? 1 : 0)
+  // [i][j] => 結尾在 nums1[i-1], nums[j-1] 的共同子序列的最大長度
 
-  const firstNum2 = nums2[0]
-  dp.forEach((row, idx) => {
-    row[0] = nums1[idx] === firstNum2 ? 1 : 0
-  })
+  let maxLengthSoFar = 0
 
-  let ans = 0
-  if (dp[0].some(length => length === 1)) {
-    ans = 1
-  } else if (dp.map(row => row[0]).some(length => length === 1)) {
-    ans = 1
-  }
-
-  for (let i = 1; i < nums1.length; i++) {
-    for (let j = 1; j < nums2.length; j++) {
-      if (nums1[i] !== nums2[j]) {
-        dp[i][j] = 0
-      } else {
+  for (let i = 1; i <= nums1.length; i++) {
+    for (let j = 1; j <= nums2.length; j++) {
+      if (nums1[i - 1] === nums2[j - 1]) {
+        // ⬇️⬇️⬇️ 重要！！
         dp[i][j] = dp[i - 1][j - 1] + 1
-        ans = Math.max(ans, dp[i][j])
+
+        maxLengthSoFar = Math.max(dp[i][j], maxLengthSoFar)
       }
     }
   }
 
-  return ans
+  return maxLengthSoFar
 }
 // @lc code=end

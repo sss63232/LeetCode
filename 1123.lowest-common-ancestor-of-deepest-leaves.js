@@ -6,14 +6,14 @@
  * https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/description/
  *
  * algorithms
- * Medium (68.45%)
- * Likes:    797
- * Dislikes: 660
- * Total Accepted:    55.2K
- * Total Submissions: 80.4K
+ * Medium (72.35%)
+ * Likes:    1967
+ * Dislikes: 844
+ * Total Accepted:    113.9K
+ * Total Submissions: 157.2K
  * Testcase Example:  '[3,5,1,6,2,0,8,null,null,7,4]'
  *
- * Given the root of a binary tree, return the lowest common ancestor of its
+ * Given the root of a binary tree, return the lowest common ancestor of its
  * deepest leaves.
  *
  * Recall that:
@@ -21,13 +21,10 @@
  *
  * The node of a binary tree is a leaf if and only if it has no children
  * The depth of the root of the tree is 0. if the depth of a node is d, the
- * depth of each of its children is d + 1.
+ * depth of each of its children is d + 1.
  * The lowest common ancestor of a set S of nodes, is the node A with the
  * largest depth such that every node in S is in the subtree with root A.
  *
- *
- * Note: This question is the same as 865:
- * https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
  *
  *
  * Example 1:
@@ -65,8 +62,12 @@
  *
  * The number of nodes in the tree will be in the range [1, 1000].
  * 0 <= Node.val <= 1000
- * The values of the nodes in the tree are unique.
+ * The values of the nodes in the tree are unique.
  *
+ *
+ *
+ * Note: This question is the same as 865:
+ * https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/
  *
  */
 
@@ -80,21 +81,43 @@
  * }
  */
 /**
- * 二叉樹 Lowest Common Ancestor
  * @param {TreeNode} root
  * @return {TreeNode}
  */
-const lcaDeepestLeaves = function (root) {
-  const _getDepth = node => node
-    ? Math.max(_getDepth(node.left), _getDepth(node.right)) + 1
-    : 0
+var lcaDeepestLeaves = function (root) {
+  // interface Result {
+  //     node: TreeNode;
+  //     depth: Number;
+  // }
+  const _dfsTofindLCA = (treeNode) => {
+    if (!treeNode) {
+      return {
+        node: null,
+        depth: 0,
+      }
+    }
 
-  if (!root) return
-  const leftDepth = _getDepth(root.left)
-  const rightDepth = _getDepth(root.right)
-  if (leftDepth === rightDepth) return root
-  return leftDepth > rightDepth
-    ? lcaDeepestLeaves(root.left)
-    : lcaDeepestLeaves(root.right)
+    const { left, right } = treeNode
+    const leftResult = _dfsTofindLCA(left)
+    const rightResult = _dfsTofindLCA(right)
+    if (leftResult.depth > rightResult.depth) {
+      return {
+        node: leftResult.node,
+        depth: leftResult.depth + 1,
+      }
+    } else if (rightResult.depth > leftResult.depth) {
+      return {
+        node: rightResult.node,
+        depth: rightResult.depth + 1,
+      }
+    } else {
+      return {
+        node: treeNode,
+        depth: leftResult.depth + 1,
+      }
+    }
+  }
+
+  return _dfsTofindLCA(root).node
 }
 // @lc code=end

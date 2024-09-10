@@ -6,15 +6,15 @@
  * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/
  *
  * algorithms
- * Easy (52.86%)
- * Likes:    3523
- * Dislikes: 143
- * Total Accepted:    534.9K
- * Total Submissions: 1M
+ * Medium (65.18%)
+ * Likes:    11102
+ * Dislikes: 318
+ * Total Accepted:    1.6M
+ * Total Submissions: 2.4M
  * Testcase Example:  '[6,2,8,0,4,7,9,null,null,3,5]\n2\n8'
  *
- * Given a binary search tree (BST), find the lowest common ancestor (LCA) of
- * two given nodes in the BST.
+ * Given a binary search tree (BST), find the lowest common ancestor (LCA) node
+ * of two given nodes in the BST.
  *
  * According to the definition of LCA on Wikipedia: “The lowest common ancestor
  * is defined between two nodes p and q as the lowest node in T that has both p
@@ -74,16 +74,35 @@
  * @param {TreeNode} q
  * @return {TreeNode}
  */
-const lowestCommonAncestor = function (root, p, q) {
-  if (!root) return null
-  if (root === p || root === q) return root
+var lowestCommonAncestor = function (root, p, q) {
+  const _findLCA = (treeNode) => {
+    if (!treeNode) {
+      return null
+    }
 
-  const { left, right } = root
-  const leftResult = lowestCommonAncestor(left, p, q)
-  const rightResult = lowestCommonAncestor(right, p, q)
-  if (leftResult && rightResult) return root
-  if (leftResult) return leftResult
-  if (rightResult) return rightResult
-  return null
+    const { val, left, right } = treeNode
+    if(val === p.val || val ===q.val){
+        return treeNode
+    }
+
+    const leftResult = _findLCA(left)
+    const rightResult = _findLCA(right)
+    
+    if (leftResult && rightResult) {
+      return treeNode
+    }
+
+    if (leftResult) {
+      return leftResult
+    } 
+    
+    if(rightResult) {
+      return rightResult
+    }
+
+    return null
+  }
+
+  return _findLCA(root)
 }
 // @lc code=end

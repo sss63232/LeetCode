@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/find-k-closest-elements/description/
  *
  * algorithms
- * Medium (42.75%)
- * Likes:    2860
- * Dislikes: 348
- * Total Accepted:    195.9K
- * Total Submissions: 451.7K
+ * Medium (47.53%)
+ * Likes:    8155
+ * Dislikes: 686
+ * Total Accepted:    560.9K
+ * Total Submissions: 1.2M
  * Testcase Example:  '[1,2,3,4,5]\n4\n3'
  *
  * Given a sorted integer array arr, two integers k and x, return the k closest
@@ -46,21 +46,26 @@
 
 // @lc code=start
 /**
- * 雙指針
  * @param {number[]} arr
  * @param {number} k
- * @param {number} x
+ * @param {number} target
  * @return {number[]}
  */
-const findClosestElements = function (arr, k, x) {
-  let left = 0
-  let right = arr.length - 1
-  while (right - left + 1 !== k) {
-    const xToLeft = Math.abs(x - arr[left])
-    const xToRight = Math.abs(x - arr[right])
-    xToLeft > xToRight ? left++ : right--
-  }
-
-  return arr.slice(left, right + 1)
+var findClosestElements = function (arr, k, target) {
+    let left = 0, right = arr.length - k;
+  
+    while (left < right) {
+      const mid = Math.floor((left + right) / 2);
+      
+      // 如果mid + k位元素更靠近x，則調整左邊界
+      if (target - arr[mid] > arr[mid + k] - target) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
+    }
+    
+    // 從left開始，選擇k個元素
+    return arr.slice(left, left + k);
 }
 // @lc code=end

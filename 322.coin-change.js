@@ -6,24 +6,30 @@
  * https://leetcode.com/problems/coin-change/description/
  *
  * algorithms
- * Medium (32.15%)
- * Likes:    2375
- * Dislikes: 84
- * Total Accepted:    259K
- * Total Submissions: 803.2K
+ * Medium (44.21%)
+ * Likes:    18992
+ * Dislikes: 454
+ * Total Accepted:    1.9M
+ * Total Submissions: 4.3M
  * Testcase Example:  '[1,2,5]\n11'
  *
- * You are given coins of different denominations and a total amount of money
- * amount. Write a function to compute the fewest number of coins that you need
- * to make up that amount. If that amount of money cannot be made up by any
- * combination of the coins, return -1.
+ * You are given an integer array coins representing coins of different
+ * denominations and an integer amount representing a total amount of money.
+ *
+ * Return the fewest number of coins that you need to make up that amount. If
+ * that amount of money cannot be made up by any combination of the coins,
+ * return -1.
+ *
+ * You may assume that you have an infinite number of each kind of coin.
+ *
  *
  * Example 1:
  *
  *
- * Input: coins = [1, 2, 5], amount = 11
+ * Input: coins = [1,2,5], amount = 11
  * Output: 3
  * Explanation: 11 = 5 + 5 + 1
+ *
  *
  * Example 2:
  *
@@ -32,8 +38,21 @@
  * Output: -1
  *
  *
- * Note:
- * You may assume that you have an infinite number of each kind of coin.
+ * Example 3:
+ *
+ *
+ * Input: coins = [1], amount = 0
+ * Output: 0
+ *
+ *
+ *
+ * Constraints:
+ *
+ *
+ * 1 <= coins.length <= 12
+ * 1 <= coins[i] <= 2^31 - 1
+ * 0 <= amount <= 10^4
+ *
  *
  */
 
@@ -43,32 +62,26 @@
  * @param {number} amount
  * @return {number}
  */
-const coinChange = function (coins, amount) {
+var coinChange = function (coins, amount) {
   if (amount === 0) return 0
-  if (Math.min(...coins) > amount) return -1
+  if (coins.length === 1 && amount % coins[0] !== 0) return -1
 
-  const dp = new Map()
-  dp.set(0, 0)
-  coins.forEach(coin => dp.set(coin, 1))
+  const dp = Array(amount + 1).fill(Number.MAX_VALUE)
+  dp[0] = 0
 
-  const _getFewestOf = coinsAmount => {
-    if (coinsAmount < 0) return -1
-    if (dp.has(coinsAmount)) return dp.get(coinsAmount)
+  for (let bagSize = 1; bagSize <= amount; bagSize++) {
+    for (
+      let selectableCoinsEndIdx = 0;
+      selectableCoinsEndIdx < coins.length;
+      selectableCoinsEndIdx++
+    ) {
+      const coin = coins[selectableCoinsEndIdx]
 
-    const candidates = coins
-      .map(coin => coinsAmount - coin)
-      .map(_getFewestOf)
-      .filter(fewest => fewest >= 0)
-
-    const curFewest = candidates.length
-      ? Math.min(...candidates) + 1
-      : -1
-
-    dp.set(coinsAmount, curFewest)
-    return curFewest
+      if (bagSize - coin < 0) continue
+      dp[bagSize] = Math.min(dp[bagSize], dp[bagSize - coin] + 1)
+    }
   }
 
-  return _getFewestOf(amount)
+  return dp[amount] === Number.MAX_VALUE ? -1 : dp[amount]
 }
-
 // @lc code=end

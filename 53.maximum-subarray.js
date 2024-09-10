@@ -6,28 +6,52 @@
  * https://leetcode.com/problems/maximum-subarray/description/
  *
  * algorithms
- * Easy (45.74%)
- * Likes:    6543
- * Dislikes: 293
- * Total Accepted:    803.2K
- * Total Submissions: 1.8M
+ * Medium (50.90%)
+ * Likes:    34238
+ * Dislikes: 1451
+ * Total Accepted:    4.2M
+ * Total Submissions: 8.2M
  * Testcase Example:  '[-2,1,-3,4,-1,2,1,-5,4]'
  *
- * Given an integer array nums, find the contiguous subarray (containing at
- * least one number) which has the largest sum and return its sum.
- *
- * Example:
+ * Given an integer array nums, find the subarray with the largest sum, and
+ * return its sum.
  *
  *
- * Input: [-2,1,-3,4,-1,2,1,-5,4],
+ * Example 1:
+ *
+ *
+ * Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
  * Output: 6
- * Explanation: [4,-1,2,1] has the largest sum = 6.
+ * Explanation: The subarray [4,-1,2,1] has the largest sum 6.
  *
  *
- * Follow up:
+ * Example 2:
  *
- * If you have figured out the O(n) solution, try coding another solution using
- * the divide and conquer approach, which is more subtle.
+ *
+ * Input: nums = [1]
+ * Output: 1
+ * Explanation: The subarray [1] has the largest sum 1.
+ *
+ *
+ * Example 3:
+ *
+ *
+ * Input: nums = [5,4,-1,7,8]
+ * Output: 23
+ * Explanation: The subarray [5,4,-1,7,8] has the largest sum 23.
+ *
+ *
+ *
+ * Constraints:
+ *
+ *
+ * 1 <= nums.length <= 10^5
+ * -10^4 <= nums[i] <= 10^4
+ *
+ *
+ *
+ * Follow up: If you have figured out the O(n) solution, try coding another
+ * solution using the divide and conquer approach, which is more subtle.
  *
  */
 
@@ -36,32 +60,32 @@
  * @param {number[]} nums
  * @return {number}
  */
+var maxSubArray = function (nums) {
+  if (!nums.length) return 0
+  if (nums.length === 1) return nums[0]
 
-/**
- * references:
- * @see [詳細解讀動態規劃的實現, 易理解 - 最大子序和 - 力扣（LeetCode）](https://leetcode-cn.com/problems/maximum-subarray/solution/xiang-xi-jie-du-dong-tai-gui-hua-de-shi-xian-yi-li/)
- */
-const maxSubArray = function (nums) {
-  // const maxSumsOfEndingOn = []
-  // maxSumsOfEndingOn[0] = nums[0]
+  // // DP:
+  // let preLargestSum = nums[0]
+  // let largestSoFar = nums[0]
   // for (let i = 1; i < nums.length; i++) {
-  //   maxSumsOfEndingOn[i] = Math.max(nums[i], nums[i] + maxSumsOfEndingOn[i - 1])
+  //   const num = nums[i]
+  //   const currentLargestSum = Math.max(preLargestSum + num, num)
+  //   largestSoFar = Math.max(largestSoFar, currentLargestSum)
+  //   preLargestSum = currentLargestSum
   // }
+  // return largestSoFar
 
-  // return Math.max(...maxSumsOfEndingOn)
+  // 貪心：
+  let largestSoFar = -Infinity
+  let currentSum = 0
+  nums.forEach((num) => {
+    currentSum += num
+    largestSoFar = Math.max(largestSoFar, currentSum)
+    if (currentSum < 0) {
+      currentSum = 0
+    }
+  })
 
-  let maxSumsOfEndingOnPre = nums[0]
-  let maxSoFar = maxSumsOfEndingOnPre
-  for (let i = 1; i < nums.length; i++) {
-    const maxSumsOfEndingOnCur = Math.max(
-      nums[i],
-      nums[i] + maxSumsOfEndingOnPre
-    )
-
-    maxSoFar = Math.max(maxSoFar, maxSumsOfEndingOnCur)
-    maxSumsOfEndingOnPre = maxSumsOfEndingOnCur
-  }
-
-  return maxSoFar
+  return largestSoFar
 }
 // @lc code=end

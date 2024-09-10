@@ -6,18 +6,18 @@
  * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/
  *
  * algorithms
- * Hard (30.68%)
- * Likes:    2621
- * Dislikes: 143
- * Total Accepted:    189.6K
- * Total Submissions: 616.6K
+ * Hard (43.33%)
+ * Likes:    7474
+ * Dislikes: 210
+ * Total Accepted:    498.3K
+ * Total Submissions: 1.1M
  * Testcase Example:  '2\n[2,4,1]'
  *
  * You are given an integer array prices where prices[i] is the price of a
  * given stock on the i^th day, and an integer k.
  *
  * Find the maximum profit you can achieve. You may complete at most k
- * transactions.
+ * transactions: i.e. you may buy at most k times and sell at most k times.
  *
  * Note: You may not engage in multiple transactions simultaneously (i.e., you
  * must sell the stock before you buy again).
@@ -46,8 +46,8 @@
  * Constraints:
  *
  *
- * 0 <= k <= 100
- * 0 <= prices.length <= 1000
+ * 1 <= k <= 100
+ * 1 <= prices.length <= 1000
  * 0 <= prices[i] <= 1000
  *
  *
@@ -55,36 +55,50 @@
 
 // @lc code=start
 /**
- * 動態規劃，股票問題
  * @param {number} k
  * @param {number[]} prices
  * @return {number}
  */
-const maxProfit = function (k, prices) {
+var maxProfit = function (k, prices) {
   const n = prices.length
+  // i-th dayIdx from 0 ~ n-1
+  const dp = Array(n)
+    .fill([])
+    .map(() => Array(2 * k + 1).fill(0)) // [0...2k]
 
-  const profit = new Array(k)
-  for (let j = 0; j <= k; j++) {
-    profit[j] = {
-      profit_in: -prices[0],
-      profit_out: 0
-    }
+  // 0 => initail state, nothing done yet
+  // 1 => 1st bougt stock
+  // 2 => 1st sold stock
+  // ...
+  // 2k-1 => k-th bought stock
+  // 2k => k-th sold stock
+
+  // Initialize the status for the 1st day
+  for (let statusIdx = 0; statusIdx <= 2 * k; statusIdx++) {
+    if (statusIdx % 2 === 1) dp[0][statusIdx] = -prices[0]
   }
-  for (let i = 0; i < n; i++) {
-    for (let j = 1; j <= k; j++) {
-      profit[j] = {
-        profit_out: Math.max(
-          profit[j].profit_out,
-          profit[j].profit_in + prices[i]
-        ),
-        profit_in: Math.max(
-          profit[j].profit_in,
-          profit[j - 1].profit_out - prices[i]
+
+  // Initialize the [0] status for every day
+  // => actually no need, cos they're all zero already from the dp creation
+
+  // Run through th DP table
+  for (let dayIdx = 1; dayIdx < n; dayIdx++) {
+    const price = prices[dayIdx]
+    for (let statusIdx = 1; statusIdx <= 2 * k; statusIdx++) {
+      if (statusIdx % 2 === 1) {
+        dp[dayIdx][statusIdx] = Math.max(
+          dp[dayIdx - 1][statusIdx],
+          dp[dayIdx - 1][statusIdx - 1] - price
+        )
+      } else {
+        dp[dayIdx][statusIdx] = Math.max(
+          dp[dayIdx - 1][statusIdx],
+          dp[dayIdx - 1][statusIdx - 1] + price
         )
       }
     }
   }
 
-  return profit[k].profit_out
+  return dp[n - 1][2 * k]
 }
 // @lc code=end

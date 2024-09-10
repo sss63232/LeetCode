@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/climbing-stairs/description/
  *
  * algorithms
- * Easy (48.96%)
- * Likes:    6961
- * Dislikes: 216
- * Total Accepted:    999.8K
- * Total Submissions: 2M
+ * Easy (52.95%)
+ * Likes:    22121
+ * Dislikes: 862
+ * Total Accepted:    3.5M
+ * Total Submissions: 6.7M
  * Testcase Example:  '2'
  *
  * You are climbing a staircase. It takes n steps to reach the top.
@@ -54,20 +54,24 @@
  * @param {number} n
  * @return {number}
  */
-const climbStairs = function (n) {
-  const memo = new Map()
+var climbStairs = function (n) {
+  const getHowManyClimbWays = (steps, stepKinds) => {
+    const dp = Array(steps + 1).fill(0)
+    dp[0] = 1
 
-  const _getStepsOf = top => {
-    if (top === 1) return 1
-    if (top === 2) return 2
+    for (let stepsRequired = 1; stepsRequired <= steps; stepsRequired++) {
+      for (let stepKindIdx = 0; stepKindIdx < stepKinds.length; stepKindIdx++) {
+        const step = stepKinds[stepKindIdx]
+        if (stepsRequired - step >= 0) {
+          dp[stepsRequired] += dp[stepsRequired - step]
+        }
+      }
+    }
 
-    if (memo.has(top)) return memo.get(top)
-
-    const steps = _getStepsOf(top - 1) + _getStepsOf(top - 2)
-    memo.set(top, steps)
-    return steps
+    console.log("TCL=> ~ climbWays ~ dp:", dp)
+    return dp[steps]
   }
 
-  return _getStepsOf(n)
+  return getHowManyClimbWays(n, [1, 2])
 }
 // @lc code=end

@@ -6,116 +6,78 @@
  * https://leetcode.com/problems/binary-search/description/
  *
  * algorithms
- * Easy (49.81%)
- * Likes:    388
- * Dislikes: 36
- * Total Accepted:    87.1K
- * Total Submissions: 174.4K
+ * Easy (57.80%)
+ * Likes:    11782
+ * Dislikes: 248
+ * Total Accepted:    2.5M
+ * Total Submissions: 4.3M
  * Testcase Example:  '[-1,0,3,5,9,12]\n9'
  *
- * Given a sorted (in ascending order) integer array nums of n elements and a
- * target value, write a function to search target in nums. If target exists,
- * then return its index, otherwise return -1.
- *
- *
+ * Given an array of integers nums which is sorted in ascending order, and an
+ * integer target, write a function to search target in nums. If target exists,
+ * then return its index. Otherwise, return -1.
+ * 
+ * You must write an algorithm with O(log n) runtime complexity.
+ * 
+ * 
  * Example 1:
- *
- *
+ * 
+ * 
  * Input: nums = [-1,0,3,5,9,12], target = 9
  * Output: 4
  * Explanation: 9 exists in nums and its index is 4
- *
- *
- *
+ * 
+ * 
  * Example 2:
- *
- *
+ * 
+ * 
  * Input: nums = [-1,0,3,5,9,12], target = 2
  * Output: -1
  * Explanation: 2 does not exist in nums so return -1
- *
- *
- *
- *
- * Note:
- *
- *
- * You may assume that all elements in nums are unique.
- * n will be in the range [1, 10000].
- * The value of each element in nums will be in the range [-9999, 9999].
- *
- *
+ * 
+ * 
+ * 
+ * Constraints:
+ * 
+ * 
+ * 1 <= nums.length <= 10^4
+ * -10^4 < nums[i], target < 10^4
+ * All the integers in nums are unique.
+ * nums is sorted in ascending order.
+ * 
+ * 
  */
 
 // @lc code=start
 /**
- *
  * @param {number[]} nums
  * @param {number} target
  * @return {number}
  */
-const search = function (nums, target) {
-  // let left = 0
-  // let right = nums.length - 1
-  // while (left + 1 < right) {
-  //   const midIdx = left + Math.floor(right - left / 2)
-  //   const midNum = nums[midIdx]
-  //   if (midNum === target) return midIdx
-  //   midNum < target ? (left = midIdx + 1) : (right = midIdx - 1)
-  // }
-  // if (nums[left] === target) return left
-  // if (nums[right] === target) return right
-  // return -1
-
-  // ============
-
-  // if (nums.length === 0) return -1
-
-  // let left = 0
-  // let right = nums.length - 1
-  // while (left + 1 < right) {
-  //   const midIdx = left + Math.floor((right - left) / 2)
-  //   const midNum = nums[midIdx]
-  //   if (midNum === target) return midIdx
-  //   if (target > midNum) {
-  //     left = midIdx + 1
-  //   } else {
-  //     right = midIdx - 1
-  //   }
-  // }
-
-  // if (nums[left] === target) return left
-  // if (nums[right] === target) return right
-  // return -1
-
-  // ============
-
-  if (!nums || !nums.length) {
-    return -1
-  }
-
-  let startIdx = 0
-  let endIdx = nums.length - 1
-  while (startIdx + 1 < endIdx) {
-    const mid = startIdx + Math.floor((endIdx - startIdx) / 2)
-    if (nums[mid] === target) {
-      endIdx = mid
-    } else if (nums[mid] < target) {
-      startIdx = mid + 1
-    } else {
-      endIdx = mid - 1
+var search = function(nums, target) {
+    let start = 0
+    let end = nums.length-1
+    while(start+1 < end){
+        const mid = start + Math.floor((end-start)/2)
+        const midNum = nums[mid]
+        if(midNum === target){
+            end = mid
+        } else if( midNum < target ){
+            start = mid
+        } else {
+            end = mid
+        }
     }
-  }
 
-  if (nums[startIdx] === target) {
-    return startIdx
-  }
+    if( nums[start] === target){
+        return start
+    }
 
-  if (nums[endIdx] === target) {
-    return endIdx
-  }
+    if( nums[end] === target){
+        return end
+    }
 
-  return -1
-
-}
+    return -1
+};
 // @lc code=end
+

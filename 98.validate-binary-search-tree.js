@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/validate-binary-search-tree/description/
  *
  * algorithms
- * Medium (29.20%)
- * Likes:    6744
- * Dislikes: 732
- * Total Accepted:    1.1M
- * Total Submissions: 3.6M
+ * Medium (33.09%)
+ * Likes:    16840
+ * Dislikes: 1377
+ * Total Accepted:    2.4M
+ * Total Submissions: 7.3M
  * Testcase Example:  '[2,1,3]'
  *
  * Given the root of a binary tree, determine if it is a valid binary search
@@ -63,35 +63,45 @@
  * }
  */
 /**
- * 二叉樹 binary search tree
  * @param {TreeNode} root
  * @return {boolean}
  */
-const isValidBST = function (root) {
-  // // traverse
-  // let isValid = true
-  // let pre = -Infinity
-  // const _inOrderTraverse = node => {
-  //   if (!node || !isValid) return
-  //   const { val, left, right } = node
-  //   _inOrderTraverse(left)
-  //   val <= pre
-  //     ? isValid = false
-  //     : pre = val
-  //   _inOrderTraverse(right)
+var isValidBST = function (root) {
+  // if(!root){
+  //     return true
   // }
-  // _inOrderTraverse(root)
-  // return isValid
 
-  // conquer
-  const _isValidWithin = (node, max, min) => {
+  // const {val, left, right} = root
+  // if(isValidBST(left) && isValidBST(right)){
+  //     if(left!==null && right!==null){
+  //         return left.val < val && val < right.val
+  //     } else if (right!==null){
+  //         return val < right.val
+  //     } else if (left!==null) {
+  //         return left.val < val
+  //     } else {
+  //         return true
+  //     }
+  // }
+
+  // return false
+
+  // Answer 2
+  function validate(node, min, max) {
     if (!node) return true
 
-    const { val, left, right } = node
-    if (val >= max || val <= min) return false
-    return _isValidWithin(left, val, min) && _isValidWithin(right, max, val)
+    if (
+      (min !== null && node.val <= min) ||
+      (max !== null && node.val >= max)
+    ) {
+      return false
+    }
+
+    return (
+      validate(node.left, min, node.val) && validate(node.right, node.val, max)
+    )
   }
 
-  return _isValidWithin(root, Infinity, -Infinity)
+  return validate(root, null, null)
 }
 // @lc code=end

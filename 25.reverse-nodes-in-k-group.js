@@ -6,47 +6,58 @@
  * https://leetcode.com/problems/reverse-nodes-in-k-group/description/
  *
  * algorithms
- * Hard (39.75%)
- * Likes:    1759
- * Dislikes: 338
- * Total Accepted:    238.6K
- * Total Submissions: 599.5K
+ * Hard (59.24%)
+ * Likes:    13698
+ * Dislikes: 699
+ * Total Accepted:    979.5K
+ * Total Submissions: 1.6M
  * Testcase Example:  '[1,2,3,4,5]\n2'
  *
- * Given a linked list, reverse the nodes of a linked list k at a time and
- * return its modified list.
- *
+ * Given the head of a linked list, reverse the nodes of the list k at a time,
+ * and return the modified list.
+ * 
  * k is a positive integer and is less than or equal to the length of the
  * linked list. If the number of nodes is not a multiple of k then left-out
- * nodes in the end should remain as it is.
- *
- *
- *
- *
- * Example:
- *
- * Given this linked list: 1->2->3->4->5
- *
- * For k = 2, you should return: 2->1->4->3->5
- *
- * For k = 3, you should return: 3->2->1->4->5
- *
- * Note:
- *
- *
- * Only constant extra memory is allowed.
- * You may not alter the values in the list's nodes, only nodes itself may be
- * changed.
- *
- *
+ * nodes, in the end, should remain as it is.
+ * 
+ * You may not alter the values in the list's nodes, only nodes themselves may
+ * be changed.
+ * 
+ * 
+ * Example 1:
+ * 
+ * 
+ * Input: head = [1,2,3,4,5], k = 2
+ * Output: [2,1,4,3,5]
+ * 
+ * 
+ * Example 2:
+ * 
+ * 
+ * Input: head = [1,2,3,4,5], k = 3
+ * Output: [3,2,1,4,5]
+ * 
+ * 
+ * 
+ * Constraints:
+ * 
+ * 
+ * The number of nodes in the list is n.
+ * 1 <= k <= n <= 5000
+ * 0 <= Node.val <= 1000
+ * 
+ * 
+ * 
+ * Follow-up: Can you solve the problem in O(1) extra memory space?
+ * 
  */
 
 // @lc code=start
 /**
  * Definition for singly-linked list.
- * function ListNode(val) {
- *     this.val = val;
- *     this.next = null;
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
  * }
  */
 /**
@@ -54,66 +65,58 @@
  * @param {number} k
  * @return {ListNode}
  */
-var reverseKGroup = function (head, k) {
-  /**
-   * method 1
-   */
-  // const _hasEnoughNodes = (head, k) => {
-  //   let cur = head
-  //   for (let i = 0; i < k; i++) {
-  //     if (cur === null) { return false }
-  //     cur = cur.next
-  //   }
-  //   return true
-  // }
-  // if (_hasEnoughNodes(head, k)) {
-  //   let cur = head
-  //   let pre = null
-  //   for (let i = 0; i < k; i++) {
-  //     const next = cur.next
-  //     cur.next = pre
-  //     pre = cur
-  //     cur = next
-  //   }
-  //   head.next = reverseKGroup(cur, k)
-  //   return pre
-  // }
-  // return head
+var reverseKGroup = function(head, k) {
+    if (!head || k === 1) return head;
 
-  /**
-   * method 2
-   */
-  const _getGroupEndNode = (head, k) => {
+    const dummy = new ListNode(0);
+    dummy.next = head;
+    let theNodeBeforeReverseRegion = dummy;
     let cur = head
-    let pre = null
-    for (let i = 0; i < k; i++) {
-      if (cur === null) {
-        return null
-      }
-      pre = cur
-      cur = cur.next
+
+    while (cur) {
+        let toBeReversedRegionTail = theNodeBeforeReverseRegion;
+        // 檢查是否還有 k 個節點
+        for (let i = 0; i < k; i++) {
+            toBeReversedRegionTail = toBeReversedRegionTail.next;
+            if (!toBeReversedRegionTail) return dummy.next;
+        }
+
+        let theNodeAfterReverseRegion = toBeReversedRegionTail.next;
+        const reversedList = getReversedList(cur, toBeReversedRegionTail);
+        
+        // 連接反轉後的部分
+        theNodeBeforeReverseRegion.next = reversedList.head;
+        reversedList.tail.next = theNodeAfterReverseRegion;
+
+        // prepare for next round
+        theNodeBeforeReverseRegion = reversedList.tail;
+        cur = theNodeAfterReverseRegion
     }
-    return pre
-  }
 
-  const _reverseAdjacent = (pre, cur) => {
-    if (cur === null) {
-      return pre
+    return dummy.next;
+};
+
+// 輔助函數：反轉鏈表的一部分
+function getReversedList(reverseStart, reverseEnd) {
+    let theNodeAfterReverseEnd = reverseEnd.next
+
+    let pre = theNodeAfterReverseEnd
+    let cur = reverseStart
+    // cur 會一路往後走 -> reverseEnd -> reverseEnd.next
+    while(cur !== theNodeAfterReverseEnd){
+        const then = cur.next
+        cur.next = pre
+
+        // prepare for next round
+        pre = cur
+        cur = then
     }
-    const next = cur.next
-    cur.next = pre
-    return _reverseAdjacent(cur, next)
-  }
 
-  const endNode = _getGroupEndNode(head, k)
-
-  if (endNode) {
-    const nextHead = endNode.next
-    endNode.next = null
-    _reverseAdjacent(null, head)
-    head.next = reverseKGroup(nextHead, k)
-    return endNode
-  }
-  return head
+    // head,tail 跟一開始相反
+    return {
+        head: reverseEnd,
+        tail: reverseStart
+    };
 }
 // @lc code=end
+

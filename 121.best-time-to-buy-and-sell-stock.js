@@ -6,38 +6,49 @@
  * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
  *
  * algorithms
- * Easy (49.49%)
- * Likes:    4153
- * Dislikes: 188
- * Total Accepted:    746.9K
- * Total Submissions: 1.5M
+ * Easy (53.81%)
+ * Likes:    31270
+ * Dislikes: 1181
+ * Total Accepted:    5.1M
+ * Total Submissions: 9.4M
  * Testcase Example:  '[7,1,5,3,6,4]'
  *
- * Say you have an array for which the i^th element is the price of a given
- * stock on day i.
+ * You are given an array prices where prices[i] is the price of a given stock
+ * on the i^th day.
  *
- * If you were only permitted to complete at most one transaction (i.e., buy
- * one and sell one share of the stock), design an algorithm to find the
- * maximum profit.
+ * You want to maximize your profit by choosing a single day to buy one stock
+ * and choosing a different day in the future to sell that stock.
  *
- * Note that you cannot sell a stock before you buy one.
+ * Return the maximum profit you can achieve from this transaction. If you
+ * cannot achieve any profit, return 0.
+ *
  *
  * Example 1:
  *
  *
- * Input: [7,1,5,3,6,4]
+ * Input: prices = [7,1,5,3,6,4]
  * Output: 5
  * Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit
  * = 6-1 = 5.
- * Not 7-1 = 6, as selling price needs to be larger than buying price.
+ * Note that buying on day 2 and selling on day 1 is not allowed because you
+ * must buy before you sell.
  *
  *
  * Example 2:
  *
  *
- * Input: [7,6,4,3,1]
+ * Input: prices = [7,6,4,3,1]
  * Output: 0
- * Explanation: In this case, no transaction is done, i.e. max profit = 0.
+ * Explanation: In this case, no transactions are done and the max profit =
+ * 0.
+ *
+ *
+ *
+ * Constraints:
+ *
+ *
+ * 1 <= prices.length <= 10^5
+ * 0 <= prices[i] <= 10^4
  *
  *
  */
@@ -47,16 +58,31 @@
  * @param {number[]} prices
  * @return {number}
  */
-let maxProfit = function (prices) {
-  let minCost = prices[0]
+var maxProfit = function (prices) {
+  // // dp[i-th 天][持有/不持有]
+  // //   const dp = new Array(prices.length).fill(new Array(2).fill(0))
+  // //   dp[0][0] = -prices[0]
+  // //   dp[0][1] = 0
+  // let preWithStock = -prices[0]
+  // let preWithoutStock = 0
+  // for (let i = 1; i < prices.length; i++) {
+  //   const curWithStock = Math.max(preWithStock, -prices[i])
+  //   const curWithoutStock = Math.max(preWithoutStock, preWithStock + prices[i])
+  //   preWithStock = curWithStock
+  //   preWithoutStock = curWithoutStock
+  // }
+  // return preWithoutStock
 
-  return prices.reduce(
-    (acc, cur) => {
-      minCost = Math.min(minCost, cur)
-      acc = Math.max(acc, cur - minCost)
+  // Greedy Solution:
+  let lowestCost = prices[0]
+  let maxProfit = 0
+  for (let i = 1; i < prices.length; i++) {
+    const price = prices[i]
+    lowestCost = Math.min(lowestCost, price)
+    const profit = price - lowestCost
+    maxProfit = Math.max(maxProfit, profit)
+  }
 
-      return acc
-    }, 0
-  )
+  return maxProfit
 }
 // @lc code=end

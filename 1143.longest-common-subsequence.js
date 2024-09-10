@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/longest-common-subsequence/description/
  *
  * algorithms
- * Medium (58.77%)
- * Likes:    3346
- * Dislikes: 40
- * Total Accepted:    218.5K
- * Total Submissions: 371.7K
+ * Medium (57.75%)
+ * Likes:    13645
+ * Dislikes: 199
+ * Total Accepted:    1.2M
+ * Total Submissions: 2.1M
  * Testcase Example:  '"abcde"\n"ace"'
  *
  * Given two strings text1 and text2, return the length of their longest common
@@ -64,36 +64,28 @@
 
 // @lc code=start
 /**
- * 動態規劃
  * @param {string} text1
  * @param {string} text2
  * @return {number}
  */
-const longestCommonSubsequence = function (text1, text2) {
-  const dp = new Array(text1.length)
-    .fill(0)
-    .map(() => new Array(text2.length).fill(0))
+var longestCommonSubsequence = function (text1, text2) {
+  const dp = Array(text1.length + 1)
+    .fill([])
+    .map(() => Array(text2.length + 1).fill(0))
 
-  const firstChar1 = text1[0]
-  dp[0] = dp[0].map((_, idx) => text2.slice(0, idx + 1).indexOf(firstChar1) >= 0 ? 1 : 0)
-  const firstChar2 = text2[0]
-  dp.forEach((row, idx) => {
-    row[0] = text1.slice(0, idx + 1).indexOf(firstChar2) >= 0 ? 1 : 0
-  })
-
-  for (let i = 1; i < text1.length; i++) {
-    for (let j = 1; j < text2.length; j++) {
-      if (text1[i] === text2[j]) {
+  let longestSoFar = 0
+  for (let i = 1; i <= text1.length; i++) {
+    for (let j = 1; j <= text2.length; j++) {
+      if (text1[i - 1] === text2[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1] + 1
       } else {
-        dp[i][j] = Math.max(
-          dp[i][j - 1],
-          dp[i - 1][j]
-        )
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
       }
+
+      longestSoFar = Math.max(longestSoFar, dp[i][j])
     }
   }
 
-  return dp[text1.length - 1][text2.length - 1]
+  return longestSoFar
 }
 // @lc code=end

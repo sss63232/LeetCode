@@ -6,20 +6,18 @@
  * https://leetcode.com/problems/jump-game/description/
  *
  * algorithms
- * Medium (35.61%)
- * Likes:    6794
- * Dislikes: 437
- * Total Accepted:    660.5K
- * Total Submissions: 1.9M
+ * Medium (38.57%)
+ * Likes:    19536
+ * Dislikes: 1260
+ * Total Accepted:    2.1M
+ * Total Submissions: 5.4M
  * Testcase Example:  '[2,3,1,1,4]'
  *
- * Given an array of non-negative integers nums, you are initially positioned
- * at the first index of the array.
+ * You are given an integer array nums. You are initially positioned at the
+ * array's first index, and each element in the array represents your maximum
+ * jump length at that position.
  *
- * Each element in the array represents your maximum jump length at that
- * position.
- *
- * Determine if you are able to reach the last index.
+ * Return true if you can reach the last index, or false otherwise.
  *
  *
  * Example 1:
@@ -55,17 +53,17 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-const canJump = function (nums) {
-  const canJumpTo = [true]
-  for (let i = 1; i < nums.length; i++) {
-    canJumpTo[i] = false
-    for (let j = 0; j < i; j++) {
-      if (canJumpTo[j] && nums[j] + j >= i) {
-        canJumpTo[i] = true
-        break
-      }
-    }
+var canJump = function (nums) {
+  if (nums.length === 1) return true
+
+  let maxJumpableIdxSoFar = 0 + nums[0]
+  for (let i = 0; i <= maxJumpableIdxSoFar; i++) {
+    const jumpableIdxFromCurrent = i + nums[i]
+    maxJumpableIdxSoFar = Math.max(maxJumpableIdxSoFar, jumpableIdxFromCurrent)
+    
+    if (maxJumpableIdxSoFar >= nums.length - 1) return true
   }
-  return canJumpTo[nums.length - 1]
+
+  return false
 }
 // @lc code=end

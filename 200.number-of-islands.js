@@ -6,24 +6,24 @@
  * https://leetcode.com/problems/number-of-islands/description/
  *
  * algorithms
- * Medium (49.12%)
- * Likes:    7999
- * Dislikes: 241
- * Total Accepted:    999.9K
- * Total Submissions: 2M
+ * Medium (59.77%)
+ * Likes:    22708
+ * Dislikes: 518
+ * Total Accepted:    2.8M
+ * Total Submissions: 4.7M
  * Testcase Example:  '[["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]'
  *
  * Given an m x n 2D binary grid grid which represents a map of '1's (land) and
  * '0's (water), return the number of islands.
- *
+ * 
  * An island is surrounded by water and is formed by connecting adjacent lands
  * horizontally or vertically. You may assume all four edges of the grid are
  * all surrounded by water.
- *
- *
+ * 
+ * 
  * Example 1:
- *
- *
+ * 
+ * 
  * Input: grid = [
  * ⁠ ["1","1","1","1","0"],
  * ⁠ ["1","1","0","1","0"],
@@ -31,11 +31,11 @@
  * ⁠ ["0","0","0","0","0"]
  * ]
  * Output: 1
- *
- *
+ * 
+ * 
  * Example 2:
- *
- *
+ * 
+ * 
  * Input: grid = [
  * ⁠ ["1","1","0","0","0"],
  * ⁠ ["1","1","0","0","0"],
@@ -43,18 +43,18 @@
  * ⁠ ["0","0","0","1","1"]
  * ]
  * Output: 3
- *
- *
- *
+ * 
+ * 
+ * 
  * Constraints:
- *
- *
+ * 
+ * 
  * m == grid.length
  * n == grid[i].length
  * 1 <= m, n <= 300
  * grid[i][j] is '0' or '1'.
- *
- *
+ * 
+ * 
  */
 
 // @lc code=start
@@ -62,129 +62,73 @@
  * @param {character[][]} grid
  * @return {number}
  */
-// var numIslands = function (grid) {
-//   const rowVariation = [0, 0, 1, -1]
-//   const colVariation = [1, -1, 0, 0]
-//   const rowLength = grid.length
-//   const colLength = grid[0].length
-
-//   const exploredCellSet = new Set()
-//   const exploreIslandFrom = (centerRowIdx, centerColIdx) => {
-//     const queue = []
-
-//     queue.push({ neighborRow: centerRowIdx, neighborCol: centerColIdx })
-//     exploredCellSet.add(`${centerRowIdx}_${centerColIdx}`)
-//     while (queue.length) {
-//       const pixel = queue.shift()
-//       for (let i = 0; i < 4; i++) {
-//         const neighborRow = pixel.neighborRow + rowVariation[i]
-//         if (neighborRow < 0 || neighborRow >= rowLength) {
-//           continue
-//         }
-//         const neighborCol = pixel.neighborCol + colVariation[i]
-//         if (neighborCol < 0 || neighborCol >= colLength) {
-//           continue
-//         }
-
-//         const position = `${neighborRow}_${neighborCol}`
-//         if (exploredCellSet.has(position)) {
-//           continue
-//         }
-//         exploredCellSet.add(position)
-
-//         if (grid[neighborRow][neighborCol] === "1") {
-//           queue.push({ neighborRow, neighborCol })
-//         }
-//       }
-//     }
-//   }
-
-//   let numberOfIslands = 0
-//   for (let rowIdx = 0; rowIdx < rowLength; rowIdx++) {
-//     for (let colIdx = 0; colIdx < colLength; colIdx++) {
-//       if (exploredCellSet.has(`${rowIdx}_${colIdx}`)) {
-//         continue
-//       }
-
-//       const cell = grid[rowIdx][colIdx]
-
-//       if (cell === '0') {
-//         continue
-//       }
-//       numberOfIslands++
-//       exploreIslandFrom(rowIdx, colIdx)
-//     }
-//   }
-
-//   return numberOfIslands
-// };
-
-
-const numIslands = function (grid) {
-  const cols = grid[0].length
-  if (cols <= 0) {
-    return 0
-  }
-
-  const rows = grid.length
-  const _turnZeroByDFS = grid => (x, y) => {
-    if (x < 0 || x >= rows || y < 0 || y >= cols || grid[x][y] === '0') {
-      return
+var numIslands = function(grid) {
+    const _isInbound = (rowIdx, colIdx) => {
+        return rowIdx >=0 && rowIdx < grid.length && colIdx >=0 && colIdx < grid[0].length
     }
 
-    grid[x][y] = '0'
+    const _checkOutTheFoundIslandByBFS = (rowIdx, colIdx) => {
+        const dx = [0, 1, 0, -1]
+        const dy = [1, 0, -1, 0]
 
-    _turnZeroByDFS(grid)(x + 1, y)
-    _turnZeroByDFS(grid)(x - 1, y)
-    _turnZeroByDFS(grid)(x, y + 1)
-    _turnZeroByDFS(grid)(x, y - 1)
-  }
-
-  const _turnZeroByBFS = grid => (rowIdx, colIdx) => {
-    const dx = [0, 1, 0, -1]
-    const dy = [1, 0, -1, 0]
-
-    const discovered = new Set()
-    const queue = []
-
-    queue.push({ rowIdx, colIdx })
-    discovered.add(`${rowIdx}_${colIdx}`)
-    while (queue.length) {
-      const cur = queue.shift()
-      grid[cur.rowIdx][cur.colIdx] = '0'
-
-      for (let i = 0; i < 4; i++) {
-        const nextRowIdx = cur.rowIdx + dy[i]
-        const nextColIdx = cur.colIdx + dx[i]
-        if (
-          nextRowIdx >= 0 &&
-          nextRowIdx < rows &&
-          nextColIdx >= 0 &&
-          nextColIdx < cols &&
-          grid[nextRowIdx][nextColIdx] === '1' &&
-          !discovered.has(`${nextRowIdx}_${nextColIdx}`)
-        ) {
-          queue.push({
-            rowIdx: nextRowIdx,
-            colIdx: nextColIdx
-          })
-          discovered.add(`${nextRowIdx}_${nextColIdx}`)
+        const queue = [[rowIdx, colIdx]]
+        const discoveredSet = new Set()
+        discoveredSet.add(`${rowIdx}-${colIdx}`)
+        while(queue.length){
+            const currentCell = queue.shift()
+            const [curRowIdx, curColIdx] = currentCell
+            grid[curRowIdx][curColIdx] = 'founded'
+            for(let k=0; k<4; k++){ 
+                const neighborRowIdx = curRowIdx + dx[k]
+                const neighborColIdx = curColIdx + dy[k]
+                if(
+                    _isInbound(neighborRowIdx, neighborColIdx) &&
+                    !discoveredSet.has(`${neighborRowIdx}-${neighborColIdx}`)
+                ){
+                    discoveredSet.add(`${neighborRowIdx}-${neighborColIdx}`)
+                    if(grid[neighborRowIdx][neighborColIdx]==='1'){
+                        grid[neighborRowIdx][neighborColIdx] = 'founed'
+                        queue.push([neighborRowIdx, neighborColIdx])
+                    }
+                }
+            }
         }
-      }
     }
-  }
 
-  let islandsCount = 0
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      if (grid[i][j] === '1') {
-        islandsCount++
-        _turnZeroByBFS(grid)(i, j)
-        // _turnZeroByDFS(grid)(i, j)
-      }
+    const _checkOutTheFoundIslandByDFS = (rowIdx, colIdx) => {
+        if(!_isInbound(rowIdx, colIdx)){
+            return
+        }
+        if(grid[rowIdx][colIdx] !== '1'){
+            return 
+        }
+
+        grid[rowIdx][colIdx] = 'found'
+        const dx = [0, 1, 0, -1]
+        const dy = [1, 0, -1, 0]
+        for(let k=0; k<4; k++){
+            const neighborRowIdx = rowIdx + dx[k]
+            const neighborColIdx = colIdx + dy[k]
+            _checkOutTheFoundIslandByDFS(neighborRowIdx, neighborColIdx)
+        }
     }
-  }
 
-  return islandsCount
-}
+    const numberOfRows = grid.length
+    const numberOfColumns = grid[0].length
+
+    let numberOfIslands = 0
+    for(let i=0; i<numberOfRows; i++){
+        for(let j=0; j<numberOfColumns; j++){
+            const cell = grid[i][j]
+            if(cell==='1'){
+                numberOfIslands++
+                _checkOutTheFoundIslandByDFS(i, j)
+            }
+        }
+    }
+
+    return numberOfIslands
+    
+};
 // @lc code=end
+

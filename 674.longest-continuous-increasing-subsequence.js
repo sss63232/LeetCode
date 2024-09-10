@@ -6,11 +6,11 @@
  * https://leetcode.com/problems/longest-continuous-increasing-subsequence/description/
  *
  * algorithms
- * Easy (46.40%)
- * Likes:    1369
- * Dislikes: 151
- * Total Accepted:    163.7K
- * Total Submissions: 347.9K
+ * Easy (50.33%)
+ * Likes:    2350
+ * Dislikes: 181
+ * Total Accepted:    276K
+ * Total Submissions: 546.6K
  * Testcase Example:  '[1,3,5,4,7]'
  *
  * Given an unsorted array of integers nums, return the length of the longest
@@ -59,16 +59,19 @@
  * @param {number[]} nums
  * @return {number}
  */
-const findLengthOfLCIS = function (nums) {
-  let longestEndOnPre = 1
-  let longestSoFar = longestEndOnPre
-  for (let i = 1; i < nums.length; i++) {
-    const longestEndOnCur = nums[i] > nums[i - 1]
-      ? longestEndOnPre + 1
-      : 1
+var findLengthOfLCIS = function (nums) {
+  const n = nums.length
+  if (n === 1) return 1
 
-    longestSoFar = Math.max(longestSoFar, longestEndOnCur)
-    longestEndOnPre = longestEndOnCur
+  // idx from 0 ~ n-1
+  const dp = Array(n).fill(1)
+
+  let longestSoFar = 1
+  for (let i = 1; i < n; i++) {
+    if (nums[i - 1] < nums[i]) {
+      dp[i] = dp[i - 1] + 1
+      longestSoFar = Math.max(dp[i], longestSoFar)
+    }
   }
 
   return longestSoFar

@@ -6,22 +6,21 @@
  * https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
  *
  * algorithms
- * Easy (58.54%)
- * Likes:    3950
- * Dislikes: 1953
- * Total Accepted:    804.1K
- * Total Submissions: 1.4M
+ * Medium (66.85%)
+ * Likes:    13722
+ * Dislikes: 2713
+ * Total Accepted:    2.1M
+ * Total Submissions: 3.1M
  * Testcase Example:  '[7,1,5,3,6,4]'
  *
- * You are given an array prices where prices[i] is the price of a given stock
- * on the i^th day.
+ * You are given an integer array prices where prices[i] is the price of a
+ * given stock on the i^th day.
  *
- * Find the maximum profit you can achieve. You may complete as many
- * transactions as you like (i.e., buy one and sell one share of the stock
- * multiple times).
+ * On each day, you may decide to buy and/or sell the stock. You can only hold
+ * at most one share of the stock at any time. However, you can buy it then
+ * immediately sell it on the same day.
  *
- * Note: You may not engage in multiple transactions simultaneously (i.e., you
- * must sell the stock before you buy again).
+ * Find and return the maximum profit you can achieve.
  *
  *
  * Example 1:
@@ -33,6 +32,7 @@
  * = 5-1 = 4.
  * Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 =
  * 3.
+ * Total profit is 4 + 3 = 7.
  *
  *
  * Example 2:
@@ -42,9 +42,7 @@
  * Output: 4
  * Explanation: Buy on day 1 (price = 1) and sell on day 5 (price = 5), profit
  * = 5-1 = 4.
- * Note that you cannot buy on day 1, buy on day 2 and sell them later, as you
- * are engaging multiple transactions at the same time. You must sell before
- * buying again.
+ * Total profit is 4.
  *
  *
  * Example 3:
@@ -52,7 +50,8 @@
  *
  * Input: prices = [7,6,4,3,1]
  * Output: 0
- * Explanation: In this case, no transaction is done, i.e., max profit = 0.
+ * Explanation: There is no way to make a positive profit, so we never buy the
+ * stock to achieve the maximum profit of 0.
  *
  *
  *
@@ -66,15 +65,29 @@
  */
 
 // @lc code=start
-/**
+/**x`
  * @param {number[]} prices
  * @return {number}
  */
-const maxProfit = function (prices) {
-  return prices.reduce((acc, cur, idx) => {
-    const profit = cur - prices[idx - 1]
-    acc += profit > 0 ? profit : 0
-    return acc
-  }, 0)
+var maxProfit = function (prices) {
+  //     // 貪心
+  //   let profitSoFar = 0
+  //   for (let i = 1; i < prices.length; i++) {
+  //     const dailyProfit = prices[i] - prices[i - 1]
+  //     profitSoFar += Math.max(dailyProfit, 0)
+  //   }
+  //   return profitSoFar
+
+  // DP:
+  let preWithStock = -prices[0]
+  let preWithoutStock = 0
+  for (let i = 1; i < prices.length; i++) {
+    const curWithStock = Math.max(preWithStock, preWithoutStock - prices[i])
+    const curWithoutStock = Math.max(preWithoutStock, preWithStock + prices[i])
+    preWithStock = curWithStock
+    preWithoutStock = curWithoutStock
+  }
+
+  return preWithoutStock
 }
 // @lc code=end
